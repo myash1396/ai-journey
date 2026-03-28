@@ -1,0 +1,40 @@
+CUSTOMER DUE DILIGENCE POLICY - RETAIL BANKING DIVISION
+
+1. PURPOSE
+This policy establishes the requirements for customer due diligence (CDD) 
+procedures to be followed by all retail banking staff when onboarding new 
+customers or reviewing existing customer relationships.
+
+2. SCOPE
+This policy applies to all retail banking operations including savings accounts,
+current accounts, fixed deposits, personal loans and credit card applications.
+It covers both individual and corporate customers.
+
+3. CUSTOMER IDENTIFICATION REQUIREMENTS
+All new customers must provide valid government issued photo identification.
+Acceptable documents include passport, national identity card or driving license.
+Address verification must be completed using utility bills or bank statements 
+not older than three months. Corporate customers must additionally provide 
+certificate of incorporation, memorandum of association and board resolution.
+
+4. RISK CLASSIFICATION
+Customers are classified into three risk categories. Low risk customers include
+salaried individuals with regular income sources and established credit history.
+Medium risk customers include self employed individuals and small business owners.
+High risk customers include politically exposed persons, non resident customers
+and those operating in high risk industries such as cash intensive businesses.
+
+5. ENHANCED DUE DILIGENCE
+High risk customers require enhanced due diligence procedures. This includes
+source of funds verification, senior management approval for account opening,
+more frequent transaction monitoring and annual relationship reviews.
+
+6. RECORD KEEPING
+All customer due diligence records must be maintained for a minimum period of
+seven years from the date of account closure. Records must be stored securely
+and made available to regulatory authorities upon request.
+
+7. STAFF RESPONSIBILITIES
+All staff involved in customer onboarding must complete mandatory AML training
+annually. Branch managers are responsible for ensuring compliance with this
+policy within their respective branches.

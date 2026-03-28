@@ -1,0 +1,24 @@
+==================================================
+Date: 2026-03-28 00:07:01
+Document: docs/sample_policy.txt
+==================================================
+
+Q1: What is the risk classification for self employed customers?
+A1: According to section 4 of the document, "RISK CLASSIFICATION", medium risk customers include "self employed individuals and small business owners". Therefore, the answer is:
+
+Medium risk customers.
+
+Q2: How long must records be kept?
+A2: According to the document, "All customer due diligence records must be maintained for a minimum period of seven years from the date of account closure." (Section 6. RECORD KEEPING)
+
+Therefore, records must be kept for at least 7 years.
+
+Q3: What documents do corporate customers need?
+A3: According to the document, corporate customers must provide:
+
+* Certificate of incorporation
+* Memorandum of association
+* Board resolution
+
+(Reference: Section 3, CUSTOMER IDENTIFICATION REQUIREMENTS)
+
