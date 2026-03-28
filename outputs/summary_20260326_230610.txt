@@ -1,0 +1,10 @@
+==================================================
+Date: 2026-03-26 23:06:10
+Source: pasted_text
+Summary Type: brief
+==================================================
+
+Here is a summary of the document in 5 sentences, focusing on the most critical information:
+
+The Pega Consultant designs, implements, and optimizes business solutions using Pega technology, leveraging advanced features like Pega Knowledge Buddy, Process AI, and generative AI capabilities. Key responsibilities include architecting and developing Pega-based applications, integrating generative AI technologies, and translating complex business needs into robust Pega architecture. The role also involves monitoring and enhancing the performance of Pega solutions, mentoring development teams, and staying updated on emerging Pega and AI technologies. Qualifications for the position include a degree in Computer Science or related field, hands-on experience with Pega technology, and certifications like CSA, CSSA, or CPBA (strongly preferred). The ideal candidate has expertise in Pega architecture, AI-powered functionalities, collaboration, leadership, and customer-focused approach.
+
