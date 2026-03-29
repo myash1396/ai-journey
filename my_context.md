@@ -32,11 +32,21 @@ ai-journey/
 │   └── sample_policy.txt    → test document
 ├── outputs/                 → generated files (local only)
 ├── venv/                    → engine room, never touch
+├── app.py                   → Day 6 master Streamlit web app
+│                              (email agent + summarizer + Q&A)
 ├── email_reviewer.py        → Day 1 basic email reviewer
-├── email_ui.py              → Day 5 Streamlit UI for email agent
-├── master_agent.py          → Day 4 master agent all tools combined
+├── email_ui.py              → Day 5 first Streamlit UI (practice)
+├── master_agent.py          → Day 4 master terminal agent
 ├── README.md                → project front door for GitHub
 └── my_context.md            → insurance policy / context file
+
+## Coming Soon (Day 7+)
+├── prompts/                 → external prompt files (Day 7)
+│   ├── email_rewriter.txt
+│   ├── summarizer_general.txt
+│   ├── summarizer_brief.txt
+│   ├── summarizer_bullet.txt
+│   └── document_qa.txt
 
 ---
 
@@ -108,7 +118,41 @@ ai-journey/
 - Learned about st.session_state concept coming in Day 6
 - Learned about technical debt concept
 - Understood DRY principle violation and why we did it intentionally
-- Mote for later : update readme as needed and clean outputs when making repo public
+- Note for later : update readme as needed and clean outputs when making repo public
+
+### Day 6 — Master Streamlit UI (Sunday 4hrs)
+- Built app.py - complete multi tool web application in browser
+- Sidebar navigation with 4 sections: Home, Email Agent, 
+  Summarizer, Document Q&A
+- Home page with 3 column layout and tool cards
+- Email Agent page:
+  * Two column layout - input left, output right
+  * Memory using st.session_state
+  * Session history counter
+  * Clear history button
+  * Auto saves to outputs folder
+- Document Summarizer page:
+  * Upload file OR paste text with Load Text button
+  * Three summary types with captions directly on radio buttons
+  * Brief changed to concise paragraph format
+  * Auto saves summaries to outputs folder
+- Document Q&A page:
+  * Upload or paste document
+  * Ask unlimited questions about document
+  * Q&A history shown in expanders
+  * Save Q&A session to file
+  * Clear Q&A history button
+- Learned st.session_state for memory management in Streamlit
+- Learned st.columns for layout
+- Learned st.expander for collapsible content
+- Identified prompt management improvement for Day 7
+- Known bug: Clear Document on uploaded files - to fix later
+
+## Known Bugs / To Fix
+- app.py Document Q&A: Clear Document button works for pasted 
+  text but not uploaded files. Streamlit file uploader reloads 
+  from widget state after session_state cleared. Fix: st.session_state 
+  key reset approach - to be done in future polish session.
 
 ## Git Workflow (Daily Reminder)
 git add .
