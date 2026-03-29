@@ -1,0 +1,21 @@
+Date: 2026-03-29 23:59:50
+Tone: Professional
+
+ORIGINAL:
+hey there ram, i was looking for some help on my user stories and i know you have finished your work. can you help me ? i know you want to spend some time taking rest but i am in need of some help as the deadline is nearby and this story is complex in terms of the requirements are not straight forward, let me know if you can help otherwise i have to check with our manager.
+
+thanks 
+
+REWRITTEN:
+Here's a rewritten version of the email:
+
+Dear Ram,
+
+I hope this email finds you well. I was wondering if you could provide some guidance on my user stories as you've completed your recent tasks. I understand that you may be looking forward to taking some time off, but I'm facing a deadline and the requirements for these stories are particularly complex.
+
+Would you be available to assist me? If not, I'll need to reach out to our manager for support.
+
+Thank you in advance for considering my request.
+
+Best regards, [Your Name]
+

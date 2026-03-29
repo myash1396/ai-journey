@@ -1,0 +1,24 @@
+Date: 2026-03-30 00:17:14
+Summary Type: General
+
+SUMMARY:
+Here is the summary:
+
+**PURPOSE**
+This document outlines the requirements for a Senior System Architect position specializing in Pega Development.
+
+**KEY POINTS**
+
+* 6-8 years of hands-on experience in Pega Development
+* Certified Senior System Architect (CSSA) certification required, with expertise in Pega 7.x or above
+* Strong design and development skills in latest versions of Pega (Pega 7.x or Pega 8+)
+* Experience working with Workflows, Blue Print, and banking domain knowledge an advantage
+
+**WHO IT AFFECTS**
+This position applies to experienced Pega developers looking for a Senior System Architect role.
+
+**ACTION ITEMS**
+No specific action items are mentioned in this document.
+
+**RISK FLAGS**
+There are no compliance or risk-related flags in this document. However, it's essential to note that the ability to work independently and directly with clients may require additional training or support on communication skills.

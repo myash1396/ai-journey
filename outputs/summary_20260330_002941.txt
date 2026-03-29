@@ -1,0 +1,15 @@
+Date: 2026-03-30 00:29:41
+Summary Type: Bullet Points
+
+SUMMARY:
+Here are the document's main points in clean bullet points:
+
+• 6-8 years of hands-on experience in Pega development.
+• Certified Senior System Architect (CSSA) certification required for Pega 7.x or above versions.
+• Hands-on design and development experience with latest Pega versions (Pega 7.x or Pega 8+).
+• Experience working with workflows and Blueprints.
+• Familiarity with the Banking Domain is an added advantage.
+• Strong communication skills are essential.
+• Knowledge of Agile project management methodologies is required.
+• Ability to work directly with clients.
+• Capacity to work independently.

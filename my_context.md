@@ -26,15 +26,17 @@
 ai-journey/
 │
 ├── tools/
-│   ├── email_agent.py     → Day 2 memory enabled agent
-│   └── summarizer.py      → Day 3 document summarizer
-├── outputs/               → all generated files saved here
+│   ├── email_agent.py       → Day 2 memory enabled email agent
+│   └── summarizer.py        → Day 3 document summarizer
 ├── docs/
-│   └── sample_policy.txt  → test document
-├── venv/                  → engine room, never touch
-├── email_reviewer.py      → Day 1 email reviewer
-├── master_agent.py        → Day 4 master agent
-└── my_context.md          → insurance policy / context file
+│   └── sample_policy.txt    → test document
+├── outputs/                 → generated files (local only)
+├── venv/                    → engine room, never touch
+├── email_reviewer.py        → Day 1 basic email reviewer
+├── email_ui.py              → Day 5 Streamlit UI for email agent
+├── master_agent.py          → Day 4 master agent all tools combined
+├── README.md                → project front door for GitHub
+└── my_context.md            → insurance policy / context file
 
 ---
 
@@ -88,6 +90,31 @@ ai-journey/
 - Connected builds to real banking use cases - BRDs, 
   architecture docs, compliance policies
 - Moved email_agent.py into tools/ folder
+
+### Day 5 — GitHub + README + First Streamlit UI (Saturday)
+- Installed Git and configured with GitHub account
+- Created private GitHub repository - ai-journey; will make public once portfolio ready
+- Learned full Git workflow: git add, commit, push
+- Learned .gitignore concept - exclude venv/ and outputs/
+- Pushed all Week 1 code to GitHub
+- Written professional README.md for the project
+- Installed Streamlit
+- Built email_ui.py - first browser based UI for email agent
+  * Text area for draft email input
+  * Radio buttons for tone selection
+  * Primary button to trigger AI rewrite
+  * Success panel showing rewritten email
+  * Copy ready code block output
+- Learned about st.session_state concept coming in Day 6
+- Learned about technical debt concept
+- Understood DRY principle violation and why we did it intentionally
+- Mote for later : update readme as needed and clean outputs when making repo public
+
+## Git Workflow (Daily Reminder)
+git add .
+git commit -m "describe what you built"
+git push
+Always run this before closing for the day.
 
 ---
 

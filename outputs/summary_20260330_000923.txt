@@ -1,0 +1,19 @@
+Date: 2026-03-30 00:09:23
+Summary Type: Bullet Points
+
+SUMMARY:
+Here are the document's key points in clean bullet points:
+
+• The ideal candidate must have strong technical skills and be hands-on to lead Pega projects and design software solutions.
+• Strong business acumen and communication skills (oral and written) are essential for this role.
+• Certified Senior System Architects should think independently but value teamwork.
+• Specific responsibilities include:
+	+ Designing integration strategies for Pega Application implementations
+	+ Formulating data strategies based on client needs and enterprise goals
+	+ Providing guidance as a subject matter expert to other CSAs
+	+ Driving best practices in Pega methodology
+	+ Maintaining knowledge of current and emerging technologies
+• The role requires alignment with business and IT goals, communication with stakeholders, and ensuring solutions meet enterprise technology standards.
+• The ideal candidate should:
+	+ Have 6+ years' experience developing applications using Pega
+	+ Possess excellent interpersonal skills to lead teams and motivate others

@@ -1,0 +1,7 @@
+Date: 2026-03-30 00:09:10
+Summary Type: Brief
+
+SUMMARY:
+Here is a summary of the document in 5 sentences:
+
+The ideal candidate should be a technical expert with hands-on experience in Pega technology and strong business acumen. As a Certified Senior System Architect, they will lead Pega projects, design integration strategies, formulate data strategies, and provide subject matter expertise. The role requires strong communication skills, teamwork, and the ability to think independently while maintaining alignment with business and IT goals. The ideal candidate should have at least 6 years of experience developing applications using Pega and 2+ years of experience with Constellation. They should also possess excellent interpersonal skills and be able to lead teams through the architecting process to delivery.

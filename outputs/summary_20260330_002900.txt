@@ -1,0 +1,7 @@
+Date: 2026-03-30 00:29:00
+Summary Type: Brief
+
+SUMMARY:
+Here's a concise summary of the document:
+
+A seasoned Pega developer with 6-8 years of hands-on experience is sought. The ideal candidate must hold a Certified Senior System Architect (CSSA) certification in Pega 7.x or above. Practical expertise in designing and developing Pega systems, particularly in latest versions like Pega 7.x and Pega 8+, is essential. Experience with workflows and blueprints is also required. A background in banking will be an asset. The candidate should possess strong communication skills, ability to work independently, and experience with agile projects. They must be able to collaborate directly with clients.

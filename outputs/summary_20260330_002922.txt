@@ -1,0 +1,7 @@
+Date: 2026-03-30 00:29:22
+Summary Type: Brief
+
+SUMMARY:
+Here's a concise summary of the document:
+
+This policy outlines the requirements for conducting customer due diligence (CDD) in retail banking, covering both individual and corporate customers. New customers must provide valid government-issued ID and address verification documents, while corporate customers must also provide incorporation certificates and board resolutions. Customers are classified into low, medium, or high risk categories, with high-risk customers requiring enhanced due diligence procedures, including source of funds verification and senior management approval for account opening. All CDD records must be maintained for seven years from account closure and made available to regulatory authorities upon request.

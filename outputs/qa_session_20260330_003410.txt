@@ -1,0 +1,25 @@
+Date: 2026-03-30 00:34:10
+Document: sample_policy.txt
+==================================================
+
+Q1: what experience is need for this job profile and what are key requirements?
+A1: Based on the provided document, the following experiences are needed for this job profile:
+
+* 6-8 years of hands-on Pega Development experience
+* Certified Senior System Architect (CSSA) with expertise in Pega 7.x or above
+
+Key requirements include:
+
+* Hands-on design/development experience in latest versions of Pega (Pega 7.x or Pega 8+)
+* Experience in Workflows and Blueprint
+* Strong communication skills
+* Ability to work directly with clients
+* Ability to work independently
+* Experience and knowledge in Agile projects
+
+Q2: What is the risk classification for self employed customers?
+A2: According to section 4 of the document, "RISK CLASSIFICATION", medium risk customers include "self employed individuals and small business owners." Therefore, the risk classification for self employed customers is Medium Risk.
+
+Q3: what is a very key important message for me in this document if i am product owner?
+A3: A very key important message for you as a Product Owner in the Retail Banking Division, according to this document, is that **all new customers must provide valid government issued photo identification and address verification using utility bills or bank statements not older than three months** (Section 3: Customer Identification Requirements). This emphasizes the importance of verifying customer identity and address during onboarding, which is a critical component of customer due diligence.
+
