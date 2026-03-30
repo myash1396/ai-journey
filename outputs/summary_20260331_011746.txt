@@ -1,0 +1,14 @@
+Date: 2026-03-31 01:17:46
+Summary Type: Bullet Points
+
+SUMMARY:
+Here are the bullet points:
+
+• Develop architectural application designs for new deals and major change requests in existing deals, ensuring systems are scalable, reliable, and manageable.
+• Provide thought leadership to delivery teams to deliver exceptional client engagement and satisfaction.
+• Create a direction to manage the portfolio of solutions, including systems, shared infrastructure services, and applications, to better match business outcome objectives.
+• Analyze technology environment, enterprise specifics, and client requirements to set a collaboration design framework/architecture.
+• Provide technical leadership to the design, development, and implementation of custom solutions through thoughtful use of modern technology.
+• Define and understand current state solutions and identify improvements, options & tradeoffs to define target state solutions.
+• Develop customized applications for customers aligned with their needs.
+• Perform design and code reviews thoroughly on a regular basis, keeping in mind security measures.

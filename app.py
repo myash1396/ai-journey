@@ -3,6 +3,16 @@ import requests
 import os
 from datetime import datetime
 
+# ─── PROMPT LOADER ───
+def load_prompt(prompt_name):
+    prompt_path = os.path.join("prompts", f"{prompt_name}.md")
+    try:
+        with open(prompt_path, "r") as f:
+            return f.read()
+    except FileNotFoundError:
+        st.error(f"⚠️ Prompt file not found: {prompt_path}")
+        return None
+
 # ─── PAGE CONFIG ───
 st.set_page_config(
     page_title="AI Banking Assistant",
@@ -36,6 +46,8 @@ if "loaded_document" not in st.session_state:
     st.session_state.loaded_document = None
 if "document_name" not in st.session_state:
     st.session_state.document_name = None
+if "uploader_key" not in st.session_state:
+    st.session_state.uploader_key = 0
 
 # ─── SIDEBAR ───
 with st.sidebar:
@@ -127,12 +139,9 @@ elif selected_tool == "✉️ Email Agent":
                 for msg in st.session_state.email_history:
                     history_text += f"{msg['role']}: {msg['content']}\n\n"
 
-                prompt = f"""You are an expert email assistant working in 
-the banking and finance industry. Rewrite draft emails to be clear, 
-polite and {tone.lower()}. Only return the rewritten email. Nothing else.
-
-{history_text}
-User: Please rewrite this email in a {tone.lower()} tone:\n{draft}"""
+                system_prompt = load_prompt("email_rewriter")
+                system_prompt = system_prompt.replace("{tone}", tone.lower())
+                prompt = f"{system_prompt}\n\n{history_text}User: Please rewrite this email in a {tone.lower()} tone:\n{draft}"
 
                 with st.spinner("AI is rewriting your email..."):
                     response = requests.post(
@@ -243,27 +252,14 @@ elif selected_tool == "📄 Document Summarizer":
 )
 
         if st.button("📄 Generate Summary", type="primary", use_container_width=True):
-            prompts = {
-                "General": """You are an expert document analyst working in banking and finance.
-Read the following document and provide a structured summary with these sections:
-1. PURPOSE - What is this document about in one sentence
-2. KEY POINTS - Top 5 most important points as bullet points
-3. WHO IT AFFECTS - Who does this apply to
-4. ACTION ITEMS - What actions are required if any
-5. RISK FLAGS - Any compliance or risk related items to be aware of
-Be concise. Use plain English. No jargon.""",
+            prompt_map = {
+    "General": "summarizer_general",
+    "Brief": "summarizer_brief",
+    "Bullet Points": "summarizer_bullet"
+}
 
-                "Brief": """You are an expert document analyst working in banking and finance.
-Summarize the following document as a single concise paragraph.
-Focus only on the most critical information. No bullet points, no headers.
-Write it in a way that a busy banking professional can read in 30 seconds.""",
-
-                "Bullet Points": """You are an expert document analyst working in banking and finance.
-Convert the following document into clean bullet points only.
-Maximum 10 bullet points. Each point must be one clear sentence."""
-            }
-
-            prompt = f"{prompts[summary_type]}\n\nDOCUMENT:\n{document_text}"
+            system_prompt = load_prompt(prompt_map[summary_type])
+            prompt = f"{system_prompt}\n\nDOCUMENT:\n{document_text}"
 
             with st.spinner("Analyzing document..."):
                 response = requests.post(
@@ -313,10 +309,10 @@ elif selected_tool == "❓ Document Q&A":
 
         if input_method == "📁 Upload a file":
             uploaded_file = st.file_uploader(
-                "Upload a text file",
-                type=["txt"],
-                key="qa_uploader"
-            )
+            "Upload a text file",
+             type=["txt"],
+             key=f"qa_uploader_{st.session_state.uploader_key}"
+)
             if uploaded_file and not st.session_state.loaded_document:
                 st.session_state.loaded_document = uploaded_file.read().decode("utf-8")
                 st.session_state.document_name = uploaded_file.name
@@ -343,6 +339,7 @@ elif selected_tool == "❓ Document Q&A":
                 st.session_state.loaded_document = None
                 st.session_state.document_name = None
                 st.session_state.qa_pairs = []
+                st.session_state.uploader_key += 1
                 st.rerun()
 
     with col2:
@@ -361,18 +358,8 @@ elif selected_tool == "❓ Document Q&A":
                 if not question.strip():
                     st.warning("⚠️ Please type a question first.")
                 else:
-                    prompt = f"""You are an expert document analyst working in banking and finance.
-Answer the following question using ONLY the information found in the document.
-If the answer is not in the document say: I could not find this information in the document.
-Be specific and concise.
-
-DOCUMENT:
-{st.session_state.loaded_document}
-
-QUESTION:
-{question}
-
-ANSWER:"""
+                    system_prompt = load_prompt("document_qa")
+                    prompt = f"{system_prompt}\n\nDOCUMENT:\n{st.session_state.loaded_document}\n\nQUESTION:\n{question}\n\nANSWER:"
 
                     with st.spinner("Searching document..."):
                         response = requests.post(
