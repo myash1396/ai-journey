@@ -25,6 +25,12 @@
 ## Project Structure
 ai-journey/
 │
+├── prompts/                 → external prompt files
+│   ├── email_rewriter.md
+│   ├── summarizer_general.md
+│   ├── summarizer_brief.md
+│   ├── summarizer_bullet.md
+│   └── document_qa.md
 ├── tools/
 │   ├── email_agent.py       → Day 2 memory enabled email agent
 │   └── summarizer.py        → Day 3 document summarizer
@@ -32,8 +38,7 @@ ai-journey/
 │   └── sample_policy.txt    → test document
 ├── outputs/                 → generated files (local only)
 ├── venv/                    → engine room, never touch
-├── app.py                   → Day 6 master Streamlit web app
-│                              (email agent + summarizer + Q&A)
+├── app.py                   → Day 6-7 master Streamlit web app
 ├── email_reviewer.py        → Day 1 basic email reviewer
 ├── email_ui.py              → Day 5 first Streamlit UI (practice)
 ├── master_agent.py          → Day 4 master terminal agent
@@ -148,11 +153,21 @@ ai-journey/
 - Identified prompt management improvement for Day 7
 - Known bug: Clear Document on uploaded files - to fix later
 
+### Day 7 — Prompt Management + Bug Fix (Monday 2hrs)
+- Created prompts/ folder with 5 external .md prompt files:
+  email_rewriter.md, summarizer_general.md, summarizer_brief.md,
+  summarizer_bullet.md, document_qa.md
+- Built load_prompt() function with try/except error handling
+- Refactored app.py - all prompts now loaded from external files
+- Understood prompt templating - {placeholder} replaced dynamically
+- Understood graceful degradation concept
+- Fixed Clear Document bug using dynamic widget key pattern
+  st.session_state.uploader_key += 1 forces Streamlit to 
+  render fresh file uploader widget on clear
+- All changes committed and verified on GitHub
+
 ## Known Bugs / To Fix
-- app.py Document Q&A: Clear Document button works for pasted 
-  text but not uploaded files. Streamlit file uploader reloads 
-  from widget state after session_state cleared. Fix: st.session_state 
-  key reset approach - to be done in future polish session.
+- None currently. All known bugs resolved. ✅
 
 ## Git Workflow (Daily Reminder)
 git add .

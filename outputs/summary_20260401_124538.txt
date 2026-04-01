@@ -1,0 +1,15 @@
+Date: 2026-04-01 12:45:38
+Summary Type: Bullet Points
+
+SUMMARY:
+Here is the document converted into clean bullet points:
+
+• All retail banking staff must follow established requirements for customer due diligence procedures when onboarding new customers or reviewing existing customer relationships.
+• This policy applies to all retail banking operations, including savings accounts, current accounts, fixed deposits, personal loans, and credit card applications, covering both individual and corporate customers.
+• New customers must provide valid government-issued photo identification, acceptable documents being passport, national identity card, or driving license, with address verification using utility bills or bank statements not older than three months.
+• Corporate customers must provide certificate of incorporation, memorandum of association, and board resolution in addition to the above requirements.
+• Customers are classified into three risk categories: low risk, medium risk, and high risk, based on factors such as income sources and credit history.
+• High-risk customers require enhanced due diligence procedures, including source of funds verification, senior management approval for account opening, and more frequent transaction monitoring and annual relationship reviews.
+• All customer due diligence records must be maintained for a minimum period of seven years from the date of account closure and stored securely, with access available to regulatory authorities upon request.
+• All staff involved in customer onboarding must complete mandatory AML training annually.
+• Branch managers are responsible for ensuring compliance with this policy within their respective branches.

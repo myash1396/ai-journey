@@ -1,0 +1,24 @@
+Date: 2026-04-01 12:45:23
+Summary Type: General
+
+SUMMARY:
+**SUMMARY**
+
+1. PURPOSE: This policy establishes the requirements for customer due diligence (CDD) procedures to be followed by all retail banking staff when onboarding new customers or reviewing existing customer relationships.
+
+2. KEY POINTS:
+* All new customers must provide valid government-issued photo identification and address verification using utility bills or bank statements not older than three months.
+* Corporate customers must provide certificate of incorporation, memorandum of association, and board resolution in addition to individual ID documents.
+* Customers are classified into three risk categories: low, medium, and high, with high-risk customers requiring enhanced due diligence procedures.
+* Enhanced due diligence includes source of funds verification, senior management approval for account opening, more frequent transaction monitoring, and annual relationship reviews.
+* All customer due diligence records must be maintained for a minimum period of seven years from the date of account closure.
+
+3. WHO IT AFFECTS: This policy applies to all retail banking operations, including savings accounts, current accounts, fixed deposits, personal loans, and credit card applications, covering both individual and corporate customers.
+
+4. ACTION ITEMS:
+* Complete mandatory AML training annually for customer onboarding staff.
+* Ensure compliance with this policy within respective branches as a branch manager.
+
+5. RISK FLAGS:
+* Failure to maintain accurate and up-to-date customer due diligence records may result in regulatory non-compliance and potential fines or penalties.
+* Inadequate risk classification of customers may lead to inadequate enhanced due diligence procedures, increasing the risk of financial crime.

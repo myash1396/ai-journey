@@ -149,7 +149,8 @@ elif selected_tool == "✉️ Email Agent":
                         json={
                             "model": "llama3",
                             "prompt": prompt,
-                            "stream": False
+                            "stream": False,
+                            "temperature": 0.4  # adjust per tool
                         }
                     )
                     result = response.json()
@@ -267,7 +268,8 @@ elif selected_tool == "📄 Document Summarizer":
                     json={
                         "model": "llama3",
                         "prompt": prompt,
-                        "stream": False
+                        "stream": False,
+                        "temperature": 0.2  # adjust per tool
                     }
                 )
                 result = response.json()
@@ -367,7 +369,8 @@ elif selected_tool == "❓ Document Q&A":
                             json={
                                 "model": "llama3",
                                 "prompt": prompt,
-                                "stream": False
+                                "stream": False,
+                                "temperature": 0.1  # adjust per tool
                             }
                         )
                         result = response.json()

@@ -1,0 +1,5 @@
+Date: 2026-04-01 12:45:49
+Summary Type: Brief
+
+SUMMARY:
+This policy establishes the requirements for customer due diligence procedures in retail banking, applying to all customers and operations, including individual and corporate accounts, savings, current accounts, fixed deposits, personal loans, and credit cards. Customers must provide valid government-issued ID and address verification using utility bills or bank statements not older than three months; high-risk customers require enhanced due diligence procedures, including source of funds verification and senior management approval for account opening; all records must be maintained securely for a minimum of seven years from account closure; staff involved in customer onboarding must complete annual AML training, with branch managers responsible for ensuring compliance.

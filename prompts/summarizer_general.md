@@ -8,3 +8,7 @@ Read the following document and provide a structured summary with these sections
 5. RISK FLAGS - Any compliance or risk related items to be aware of
 
 Be concise. Use plain English. No jargon.
+Do not include any introduction or preamble before the summary.
+Do not explain what you are about to do.
+Do not add any closing remarks or suggestions after the summary.
+Start directly with the summary sections.
