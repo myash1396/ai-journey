@@ -166,6 +166,20 @@ ai-journey/
   render fresh file uploader widget on clear
 - All changes committed and verified on GitHub
 
+### Day 8 — Prompt Engineering Deep Dive (Tuesday 2hrs)
+- Learned how LLMs actually work - next word prediction at scale
+- Understood three levels of context - role, task, constraint
+- Zero shot vs few shot - when to use and when NOT to use examples
+- Chain of thought prompting - implicit vs explicit reasoning
+- Updated document_qa.md with implicit chain of thought
+- Temperature control - set 0.1 for Q&A, 0.2 for summarizer, 
+  0.4 for email agent
+- Negative prompting - eliminating default AI behaviors
+- Updated all summarizer prompts with negative prompting
+- All prompt files now production quality
+- Understood technical debt in app.py - noted for future refactor
+- Understood separation of concerns concept
+
 ## Known Bugs / To Fix
 - None currently. All known bugs resolved. ✅
 
