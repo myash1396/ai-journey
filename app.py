@@ -12,6 +12,28 @@ def load_prompt(prompt_name):
     except FileNotFoundError:
         st.error(f"⚠️ Prompt file not found: {prompt_path}")
         return None
+    
+# ─── OLLAMA API CALLER ───
+def call_ollama(prompt, temperature=0.7):
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "llama3",
+                "prompt": prompt,
+                "stream": False,
+                "temperature": temperature
+            },
+            timeout=60
+        )
+        result = response.json()
+        return result["response"], None
+    except requests.exceptions.ConnectionError:
+        return None, "⚠️ Cannot connect to Ollama. Please make sure Ollama is running and try again."
+    except requests.exceptions.Timeout:
+        return None, "⚠️ Request timed out. The model is taking too long to respond. Please try again."
+    except Exception as e:
+        return None, f"⚠️ Something went wrong: {str(e)}"
 
 # ─── PAGE CONFIG ───
 st.set_page_config(
@@ -144,56 +166,49 @@ elif selected_tool == "✉️ Email Agent":
                 prompt = f"{system_prompt}\n\n{history_text}User: Please rewrite this email in a {tone.lower()} tone:\n{draft}"
 
                 with st.spinner("AI is rewriting your email..."):
-                    response = requests.post(
-                        "http://localhost:11434/api/generate",
-                        json={
-                            "model": "llama3",
-                            "prompt": prompt,
-                            "stream": False,
-                            "temperature": 0.4  # adjust per tool
-                        }
-                    )
-                    result = response.json()
-                    rewritten = result["response"]
+                 rewritten, error = call_ollama(prompt, temperature=0.4)
 
-                # Save to session state
-                st.session_state.email_history.append({
-                    "role": "User",
-                    "content": f"Rewrite in {tone} tone: {draft}"
-                })
-                st.session_state.email_history.append({
-                    "role": "Assistant",
-                    "content": rewritten
-                })
+                if error:
+                 st.error(error)
+                else:
+                    # Save to session state
+                    st.session_state.email_history.append({
+                        "role": "User",
+                        "content": f"Rewrite in {tone} tone: {draft}"
+                    })
+                    st.session_state.email_history.append({
+                        "role": "Assistant",
+                        "content": rewritten
+                    })
 
-                # Save to file
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                os.makedirs("outputs", exist_ok=True)
-                with open(f"outputs/email_{timestamp}.txt", "a") as f:
-                    f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-                    f.write(f"Tone: {tone}\n\n")
-                    f.write(f"ORIGINAL:\n{draft}\n\n")
-                    f.write(f"REWRITTEN:\n{rewritten}\n\n")
+                    # Save to file
+                    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                    os.makedirs("outputs", exist_ok=True)
+                    with open(f"outputs/email_{timestamp}.txt", "a") as f:
+                        f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                        f.write(f"Tone: {tone}\n\n")
+                        f.write(f"ORIGINAL:\n{draft}\n\n")
+                        f.write(f"REWRITTEN:\n{rewritten}\n\n")
 
-    with col2:
-        st.markdown("### ✅ Rewritten Email")
-        if st.session_state.email_history:
-            last_response = st.session_state.email_history[-1]["content"]
-            st.success(last_response)
-            st.markdown("### 📋 Copy Ready Version")
-            st.code(last_response, language=None)
-        else:
-            st.info("Your rewritten email will appear here.")
+                    with col2:
+                        st.markdown("### ✅ Rewritten Email")
+                        if st.session_state.email_history:
+                            last_response = st.session_state.email_history[-1]["content"]
+                            st.success(last_response)
+                            st.markdown("### 📋 Copy Ready Version")
+                            st.code(last_response, language=None)
+                        else:
+                            st.info("Your rewritten email will appear here.")
 
-        # Session history
-        if st.session_state.email_history:
-            st.divider()
-            st.markdown(f"### 📊 Session History")
-            email_count = len(st.session_state.email_history) // 2
-            st.metric("Emails reviewed this session", email_count)
-            if st.button("🗑️ Clear History", use_container_width=True):
-                st.session_state.email_history = []
-                st.rerun()
+                        # Session history
+                        if st.session_state.email_history:
+                            st.divider()
+                            st.markdown(f"### 📊 Session History")
+                            email_count = len(st.session_state.email_history) // 2
+                            st.metric("Emails reviewed this session", email_count)
+                            if st.button("🗑️ Clear History", use_container_width=True):
+                                st.session_state.email_history = []
+                                st.rerun()
 
 # ─── DOCUMENT SUMMARIZER PAGE ───
 elif selected_tool == "📄 Document Summarizer":
@@ -219,7 +234,6 @@ elif selected_tool == "📄 Document Summarizer":
         )
         if uploaded_file:
             document_text = uploaded_file.read().decode("utf-8")
-            st.success(f"✅ File loaded: {uploaded_file.name} ({len(document_text)} characters)")
 
     else:
         pasted_text = st.text_area(
@@ -228,12 +242,20 @@ elif selected_tool == "📄 Document Summarizer":
             placeholder="Paste any policy document, report, email thread or BRD here..."
         )
         if st.button("📋 Load Text", use_container_width=True):
-            st.session_state.loaded_document = pasted_text
-            st.session_state.document_name = "Pasted Text"
+            if not pasted_text.strip():
+                st.warning("⚠️ Please paste some text before loading.")
+            else:
+                st.session_state.loaded_document = pasted_text
+                st.session_state.document_name = "Pasted Text"
+                st.success("✅ Text loaded successfully")
 
     if input_method == "📁 Upload a file" and uploaded_file:
-        st.session_state.loaded_document = document_text
-        st.session_state.document_name = uploaded_file.name
+        if len(document_text.strip()) == 0:
+             st.warning("⚠️ The uploaded file is empty. Please upload a file with content.")
+        else:
+            st.session_state.loaded_document = document_text
+            st.session_state.document_name = uploaded_file.name
+            st.success(f"✅ File loaded: {uploaded_file.name}")
 
     document_text = st.session_state.loaded_document
 
@@ -263,32 +285,24 @@ elif selected_tool == "📄 Document Summarizer":
             prompt = f"{system_prompt}\n\nDOCUMENT:\n{document_text}"
 
             with st.spinner("Analyzing document..."):
-                response = requests.post(
-                    "http://localhost:11434/api/generate",
-                    json={
-                        "model": "llama3",
-                        "prompt": prompt,
-                        "stream": False,
-                        "temperature": 0.2  # adjust per tool
-                    }
-                )
-                result = response.json()
-                summary = result["response"]
+                summary, error = call_ollama(prompt, temperature=0.2)
 
-            st.divider()
-            st.markdown("### ✅ Summary")
-            st.markdown(summary)
+            if error:
+                st.error(error)
+            else:
+                st.divider()
+                st.markdown("### ✅ Summary")
+                st.markdown(summary)
 
-            # Save to file
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            os.makedirs("outputs", exist_ok=True)
-            with open(f"outputs/summary_{timestamp}.txt", "w") as f:
-                f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-                f.write(f"Summary Type: {summary_type}\n\n")
-                f.write(f"SUMMARY:\n{summary}\n")
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                os.makedirs("outputs", exist_ok=True)
+                with open(f"outputs/summary_{timestamp}.txt", "w") as f:
+                    f.write(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                    f.write(f"Summary Type: {summary_type}\n\n")
+                    f.write(f"SUMMARY:\n{summary}\n")
 
-            st.success(f"✅ Summary saved to outputs folder")
-            st.code(summary, language=None)
+                st.success(f"✅ Summary saved to outputs folder")
+                st.code(summary, language=None)
 
 # ─── DOCUMENT Q&A PAGE ───
 elif selected_tool == "❓ Document Q&A":
@@ -316,9 +330,13 @@ elif selected_tool == "❓ Document Q&A":
              key=f"qa_uploader_{st.session_state.uploader_key}"
 )
             if uploaded_file and not st.session_state.loaded_document:
-                st.session_state.loaded_document = uploaded_file.read().decode("utf-8")
-                st.session_state.document_name = uploaded_file.name
-                st.success(f"✅ Loaded: {uploaded_file.name}")
+                content = uploaded_file.read().decode("utf-8")
+                if len(content.strip()) == 0:
+                    st.warning("⚠️ The uploaded file is empty. Please upload a file with content.")
+                else:
+                    st.session_state.loaded_document = content
+                    st.session_state.document_name = uploaded_file.name
+                    st.success(f"✅ Loaded: {uploaded_file.name}")
 
         else:
             pasted_text = st.text_area(
@@ -328,9 +346,12 @@ elif selected_tool == "❓ Document Q&A":
                 key="qa_paste"
             )
             if st.button("📋 Load Text", use_container_width=True, key="qa_load"):
-                st.session_state.loaded_document = pasted_text
-                st.session_state.document_name = "Pasted Text"
-                st.success("✅ Text loaded successfully")
+                if not pasted_text.strip():
+                    st.warning("⚠️ Please paste some text before loading.")
+                else:
+                    st.session_state.loaded_document = pasted_text
+                    st.session_state.document_name = "Pasted Text"
+                    st.success("✅ Text loaded successfully")
 
         if st.session_state.loaded_document:
             st.info(f"📄 Active document: **{st.session_state.document_name}**")
@@ -364,19 +385,12 @@ elif selected_tool == "❓ Document Q&A":
                     prompt = f"{system_prompt}\n\nDOCUMENT:\n{st.session_state.loaded_document}\n\nQUESTION:\n{question}\n\nANSWER:"
 
                     with st.spinner("Searching document..."):
-                        response = requests.post(
-                            "http://localhost:11434/api/generate",
-                            json={
-                                "model": "llama3",
-                                "prompt": prompt,
-                                "stream": False,
-                                "temperature": 0.1  # adjust per tool
-                            }
-                        )
-                        result = response.json()
-                        answer = result["response"]
+                         answer, error = call_ollama(prompt, temperature=0.1)
 
-                    st.session_state.qa_pairs.append((question, answer))
+                    if error:
+                        st.error(error)
+                    else:
+                        st.session_state.qa_pairs.append((question, answer))
 
             # Display Q&A history
             if st.session_state.qa_pairs:

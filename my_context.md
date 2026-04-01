@@ -180,6 +180,25 @@ ai-journey/
 - Understood technical debt in app.py - noted for future refactor
 - Understood separation of concerns concept
 
+### Day 9 — Error Handling + Input Validation (Wednesday 2hrs)
+- Built call_ollama() reusable function with try/except
+- Handles ConnectionError, Timeout, and general exceptions
+- Added timeout=60 to all Ollama API calls
+- Tuple return pattern - returns (result, error)
+- Fixed all three tools to use call_ollama()
+- Empty file validation in summarizer and Q&A
+- Blank text validation in summarizer and Q&A  
+- Understood defensive programming concept
+- Understood graceful degradation in practice
+- App now production quality in terms of error handling
+
+## UI Polish - To Do
+- Smoother loading states with more descriptive spinners
+- Word count display on email input
+- Character count on document upload
+- Better success feedback animations
+- Mobile responsiveness check
+
 ## Known Bugs / To Fix
 - None currently. All known bugs resolved. ✅
 
@@ -212,57 +231,71 @@ Always run this before closing for the day.
 
 ---
 
-### Week 1 — Foundations ← ALMOST COMPLETE
+### Week 1 — Foundations ← COMPLETE
 - Day 1 ✅ — Python + Ollama + first AI script
 - Day 2 ✅ — Memory + file saving + agent menu
 - Day 3 ✅ — Document summarizer + project structure
 - Day 4 ✅ — Master agent + Document Q&A + RAG concepts
-- Day 5 🟡 (Saturday - 4hrs) — GitHub setup + Week 1 recap
+- Day 5 🟡 (Saturday - 4hrs) — GitHub setup + README + First streamlit UI
   + Polish all existing tools
   + Write proper README for project
   + Push everything to GitHub
   + First LinkedIn post about your journey
-- Day 6 🟡 (Sunday - 4hrs) — Streamlit intro + first UI
   + Install Streamlit
   + Email agent gets a browser based UI
   + Run your first AI web app locally
+- Day 6 🟡 (Sunday - 4hrs) — Master Streamlit UI
+
 
 ---
 
-### Week 2 — UI + Prompt Engineering (Mon-Fri, 2hrs each)
-- Day 7 — Streamlit for document summarizer + Q&A UI
-- Day 8 — Connect all tools in one Streamlit interface
-- Day 9 — Prompt engineering deep dive
-  + Making AI behave precisely
-  + Temperature, context, instruction tuning
-- Day 10 — Polish master agent UI
-  + Clean design
-  + Error handling
-  + Better user experience
-- Day 11 (Saturday - 4hrs) — Build complete mini product
-  + Pick one real banking use case
-  + Full UI, full functionality, clean outputs
-  + Record a short demo video
-- Day 12 (Sunday - 4hrs) — Portfolio + Visibility day
+### Week 2 — UI + Prompt Engineering + More <- INPROGRESS
+- Day 7 — Prompt Management + Bug Fix
+- Day 8 — Prompt Engineering Deep Dive
+- Day 9 ✅ (Wed) — Error handling, input validation, call_ollama()
+- Day 10 (Thu 2hrs) — PDF Support
+  + Install pdfplumber
+  + Add PDF upload to summarizer and Q&A
+  + Test on real banking PDFs
+  + Update file uploader to accept .pdf and .txt
+- Day 11 (Fri 2hrs) — Polish + UI Improvements
+  + Smooth loading states with descriptive spinners
+  + Word count on email input
+  + Character count on document load
+  + Better success/error feedback
+  + Mobile responsiveness check
+  + Clean up app.py technical debt where possible
+- Day 12 (Sat 4hrs) — Mini Product: Pega BRD Analyzer
+  + Standalone tool built on top of existing app
+  + Load any Pega BRD or requirements document
+  + Auto extract user stories
+  + Identify business rules
+  + Flag edge cases and missing requirements
+  + Generate developer questions before building
+  + Full UI with Streamlit
+  + Save analysis report to outputs
+  + Push to GitHub as separate tool
+- Day 13 (Sun 4hrs) — Portfolio + Visibility Day
   + Clean up GitHub repository
-  + Write proper project documentation
+  + Update README with all new features
+  + Record a short demo video
   + LinkedIn post with demo
   + Start freelance profile setup
 
 ---
 
 ### Week 3 — Agents + Automation
-- Day 13 (Mon) — What agents really are + decision making
-- Day 14 (Tue) — Build agent with multiple tools
-- Day 15 (Wed) — Add web search to your agent
-- Day 16 (Thu) — Connect agent to banking workflow
-- Day 17 (Fri) — Test, debug, polish
-- Day 18 (Sat - 4hrs) — Build compliance checker agent
+- Day 14 (Mon) — What agents really are + decision making
+- Day 15 (Tue) — Build agent with multiple tools
+- Day 16 (Wed) — Add web search to your agent
+- Day 17 (Thu) — Connect agent to banking workflow
+- Day 18 (Fri) — Test, debug, polish
+- Day 19 (Sat 4hrs) — Build compliance checker agent
   + Load policy document
   + Check any process against it
   + Flag risks automatically
   + Save compliance report
-- Day 19 (Sun - 4hrs) — Extend compliance checker
+- Day 20 (Sun 4hrs) — Extend compliance checker
   + Add UI
   + Test on real banking policies
   + Push to GitHub
@@ -270,33 +303,33 @@ Always run this before closing for the day.
 ---
 
 ### Week 4 — RAG Deep Dive + Portfolio
-- Day 20 (Mon) — RAG properly + vector databases intro
-- Day 21 (Tue) — Build proper RAG pipeline
-- Day 22 (Wed) — Multi document RAG
-- Day 23 (Thu) — BRD analyzer tool
-- Day 24 (Fri) — Pega + AI connection in real world
-- Day 25 (Sat - 4hrs) — Flagship portfolio project begins
+- Day 21 (Mon) — RAG properly + vector databases intro
+- Day 22 (Tue) — Build proper RAG pipeline
+- Day 23 (Wed) — Multi document RAG
+- Day 24 (Thu) — BRD analyzer tool enhanced
+- Day 25 (Fri) — Pega + AI connection in real world
+- Day 26 (Sat 4hrs) — Flagship portfolio project begins
   + Full RAG app with UI
   + Banking/Pega domain specific
   + Clean documentation
-- Day 26 (Sun - 4hrs) — Flagship project complete
+- Day 27 (Sun 4hrs) — Flagship project complete
   + Push to GitHub with proper README
   + Record demo video
 
 ---
 
 ### Week 5 — Visibility + Money
-- Day 27 (Mon) — Freelance profile setup
-- Day 28 (Tue) — How to price your skills
-- Day 29 (Wed) — APIs + making tools available to others
-- Day 30 (Thu) — Packaging and sharing your tools
-- Day 31 (Fri) — Final polish and prep
-- Day 32 (Sat - 4hrs) — Launch day
+- Day 28 (Mon) — Freelance profile setup
+- Day 29 (Tue) — How to price your skills
+- Day 30 (Wed) — APIs + making tools available to others
+- Day 31 (Thu) — Packaging and sharing your tools
+- Day 32 (Fri) — Final polish and prep
+- Day 33 (Sat 4hrs) — Launch day
   + Finalize portfolio
   + Optimize LinkedIn with AI skills
   + Apply to 3 high paying roles
   + Send 3 freelance proposals
-- Day 33 (Sun - 4hrs) — Portfolio website
+- Day 34 (Sun 4hrs) — Portfolio website
   + Simple personal site showcasing your projects
   + Goes live today
 
