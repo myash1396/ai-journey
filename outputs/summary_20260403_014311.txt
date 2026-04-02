@@ -1,0 +1,22 @@
+Date: 2026-04-03 01:43:11
+Summary Type: General
+
+SUMMARY:
+**SUMMARY**
+
+1. PURPOSE: This policy outlines the criteria for approving retail loan applications.
+
+2. KEY POINTS:
+	* Applicants must be at least 21 years old, have a minimum monthly income of Rs 25000, a credit score of 700 or above, and at least 2 years of employment history.
+	* Loan limits are set at: personal loans - Rs 10 lakhs, home loans - Rs 50 lakhs, vehicle loans - Rs 15 lakhs.
+	* Standard applications under Rs 5 lakhs require branch manager approval, while those above Rs 5 lakhs require regional credit committee approval.
+	* Processing time is 3-5 working days for standard applications.
+
+3. WHO IT AFFECTS: This policy applies to all retail loan applicants.
+
+4. ACTION ITEMS:
+	* Loan applicants must meet the eligibility criteria and submit required documentation (Government issued photo ID, last 6 months bank statements, last 3 months salary slips, address proof not older than 3 months).
+	* Branch managers and regional credit committee members are responsible for approving or rejecting loan applications.
+
+5. RISK FLAGS:
+	* Rejection criteria include credit score below 700, existing loan defaults on record, incomplete documentation, and debt to income ratio exceeding 50 percent.

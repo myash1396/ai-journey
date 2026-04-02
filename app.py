@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import os
 from datetime import datetime
+from tools.pdf_reader import extract_text_from_pdf
 
 # ─── PROMPT LOADER ───
 def load_prompt(prompt_name):
@@ -228,12 +229,20 @@ elif selected_tool == "📄 Document Summarizer":
 
     if input_method == "📁 Upload a file":
         uploaded_file = st.file_uploader(
-            "Upload a text file",
-            type=["txt"],
-            help="Only .txt files supported for now"
-        )
+        "Upload a document",
+        type=["txt", "pdf"],
+        help="Supports .txt and .pdf files"
+         )
         if uploaded_file:
-            document_text = uploaded_file.read().decode("utf-8")
+            if uploaded_file.type == "application/pdf":
+                with st.spinner("Reading PDF..."):
+                    document_text, error = extract_text_from_pdf(
+                        file_object=uploaded_file
+                    )
+                if error:
+                    st.error(error)              
+            else:
+                document_text = uploaded_file.read().decode("utf-8")
 
     else:
         pasted_text = st.text_area(
@@ -325,18 +334,30 @@ elif selected_tool == "❓ Document Q&A":
 
         if input_method == "📁 Upload a file":
             uploaded_file = st.file_uploader(
-            "Upload a text file",
-             type=["txt"],
-             key=f"qa_uploader_{st.session_state.uploader_key}"
-)
+                "Upload a document",
+                type=["txt", "pdf"],
+                key=f"qa_uploader_{st.session_state.uploader_key}"
+            )
             if uploaded_file and not st.session_state.loaded_document:
-                content = uploaded_file.read().decode("utf-8")
-                if len(content.strip()) == 0:
-                    st.warning("⚠️ The uploaded file is empty. Please upload a file with content.")
+                if uploaded_file.type == "application/pdf":
+                    with st.spinner("Reading PDF..."):
+                        content, error = extract_text_from_pdf(
+                            file_object=uploaded_file
+                        )
+                    if error:
+                        st.error(error)
+                    else:
+                        st.session_state.loaded_document = content
+                        st.session_state.document_name = uploaded_file.name
+                        st.success(f"✅ PDF loaded: {uploaded_file.name}")
                 else:
-                    st.session_state.loaded_document = content
-                    st.session_state.document_name = uploaded_file.name
-                    st.success(f"✅ Loaded: {uploaded_file.name}")
+                    content = uploaded_file.read().decode("utf-8")
+                    if len(content.strip()) == 0:
+                        st.warning("⚠️ The uploaded file is empty. Please upload a file with content.")
+                    else:
+                        st.session_state.loaded_document = content
+                        st.session_state.document_name = uploaded_file.name
+                        st.success(f"✅ Loaded: {uploaded_file.name}")
 
         else:
             pasted_text = st.text_area(
