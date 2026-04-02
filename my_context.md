@@ -33,9 +33,12 @@ ai-journey/
 │   └── document_qa.md
 ├── tools/
 │   ├── email_agent.py       → Day 2 memory enabled email agent
-│   └── summarizer.py        → Day 3 document summarizer
+│   ├── summarizer.py        → Day 3 document summarizer
+│   └── pdf_reader.py        → Day 10 PDF text extraction
 ├── docs/
-│   └── sample_policy.txt    → test document
+│   ├── sample_policy.txt    → test text document
+│   └── test_banking_policy.pdf → test PDF document
+├── create_test_pdf.py       → one time script to create test PDF
 ├── outputs/                 → generated files (local only)
 ├── venv/                    → engine room, never touch
 ├── app.py                   → Day 6-7 master Streamlit web app
@@ -191,6 +194,19 @@ ai-journey/
 - Understood defensive programming concept
 - Understood graceful degradation in practice
 - App now production quality in terms of error handling
+
+### Day 10 — PDF Support (Thursday 2hrs)
+- Installed pdfplumber library
+- Built tools/pdf_reader.py with extract_text_from_pdf()
+- Handles file_path and file_object inputs
+- Graceful handling of empty PDFs and scanned/image PDFs
+- Added PDF upload support to Document Summarizer
+- Added PDF upload support to Document Q&A
+- MIME type checking - application/pdf
+- Created test PDF using reportlab - docs/test_banking_policy.pdf
+- Tested Q&A on PDF - accurate answers with section references
+- Fixed duplicate success message bug independently
+- Understood OCR concept for scanned PDFs - future topic
 
 ## UI Polish - To Do
 - Smoother loading states with more descriptive spinners
