@@ -208,6 +208,27 @@ ai-journey/
 - Fixed duplicate success message bug independently
 - Understood OCR concept for scanned PDFs - future topic
 
+### Day 11 — Polish + Navigation Fix + Home Dashboard (Friday 2hrs)
+- Fixed home page navigation using nav_trigger pattern
+- nav_trigger prevents sidebar radio from overwriting button navigation
+- Added unique keys to all buttons - fixed DuplicateElementId error
+- Fixed email agent col2 - was incorrectly nested inside button block
+- Built rich home page dashboard:
+  + Live session metrics - emails reviewed, questions asked
+  + Active document status
+  + Tool cards with descriptions
+  + Session activity panel showing recent actions
+  + Pro tips section
+- Complete clean app.py rewrite - all navigation debt resolved
+- Better spinner messages - descriptive per tool and action
+- Email input word count + character count - live as you type
+- PDF page count + word count displayed on load
+- TXT word count displayed on load
+- Summarizer and Q&A share loaded_document intentionally
+  - Feature: load once use in both tools
+  - User can clear document manually if needed
+- Committed and verified on GitHub
+
 ## UI Polish - To Do
 - Smoother loading states with more descriptive spinners
 - Word count display on email input

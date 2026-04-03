@@ -1,0 +1,21 @@
+Date: 2026-04-04 02:08:04
+Tone: Professional
+
+ORIGINAL:
+hi john can you please help em with my user story
+thankls
+
+REWRITTEN:
+Subject: Request for Assistance with User Story
+
+Dear John,
+
+I hope this email finds you well. I am reaching out to request your assistance with a user story that I am currently working on. Your expertise would be greatly appreciated in helping me understand the requirements and ensuring that my implementation meets the necessary standards.
+
+Would it be possible for us to schedule a brief discussion to go over the details of the user story? I would greatly appreciate any guidance or insights you can offer.
+
+Thank you in advance for your time and consideration. I look forward to hearing back from you soon.
+
+Best regards,
+[Your Name]
+
