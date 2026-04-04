@@ -4,7 +4,7 @@
 
 ## Who I Am
 - **Role:** Pega developer working in banking domain
-- **Location:** Bengaluru, India
+- **Location:** India
 - **Goal:** High paying job (India or abroad) + side income safety net
 - **Availability:** 2 hours per day
 - **Python level:** Beginner but fast learner
