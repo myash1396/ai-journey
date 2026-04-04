@@ -30,18 +30,22 @@ ai-journey/
 │   ├── summarizer_general.md
 │   ├── summarizer_brief.md
 │   ├── summarizer_bullet.md
+│   ├── brd_analyzer.md      → Senior BA prompt
 │   └── document_qa.md
 ├── tools/
 │   ├── email_agent.py       → Day 2 memory enabled email agent
 │   ├── summarizer.py        → Day 3 document summarizer
 │   └── pdf_reader.py        → Day 10 PDF text extraction
+│   ├── brd_analyzer.py      → BRD analysis core logic
 ├── docs/
 │   ├── sample_policy.txt    → test text document
+│   ├── sample_brd.txt       → test BRD document
 │   └── test_banking_policy.pdf → test PDF document
 ├── create_test_pdf.py       → one time script to create test PDF
 ├── outputs/                 → generated files (local only)
 ├── venv/                    → engine room, never touch
 ├── app.py                   → Day 6-7 master Streamlit web app
+├── brd_app.py               → Day 12 Pega BRD Analyzer
 ├── email_reviewer.py        → Day 1 basic email reviewer
 ├── email_ui.py              → Day 5 first Streamlit UI (practice)
 ├── master_agent.py          → Day 4 master terminal agent
@@ -228,6 +232,23 @@ ai-journey/
   - Feature: load once use in both tools
   - User can clear document manually if needed
 - Committed and verified on GitHub
+
+### Day 12 — Pega BRD Analyzer (Saturday 4hrs)
+- Built brd_app.py - standalone Streamlit app for BRD analysis
+- Built tools/brd_analyzer.py - core analysis logic
+- Built prompts/brd_analyzer.md - Senior BA prompt
+- Analysis sections: Requirement Summary, User Stories, 
+  Business Rules, Edge Cases, Developer Questions, 
+  Risk Flags, Complexity Assessment
+- Added section tabs - each section in its own tab
+- extract_section() function - parses AI output into sections
+- Save analysis as .md report with timestamp
+- View Full Raw Analysis expander
+- Fixed encoding errors - utf-8 on read and write
+- Fixed closing remarks with negative prompting
+- Fixed user story consistency with few shot examples
+- Committed and verified on GitHub
+- READY TO DEMO TO TEAM 🎯
 
 ## UI Polish - To Do
 - Smoother loading states with more descriptive spinners
