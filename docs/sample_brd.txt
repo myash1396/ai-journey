@@ -1,0 +1,58 @@
+PROJECT: RETAIL LOAN APPLICATION PROCESSING
+BRD VERSION: 1.2
+DATE: MARCH 2026
+
+1. OVERVIEW
+The bank requires an automated loan application processing system to handle 
+retail customer loan applications. The system should replace the current 
+manual process where loan officers review applications individually.
+
+2. BUSINESS OBJECTIVE
+Reduce loan processing time from 5 days to 24 hours for standard applications.
+Improve customer experience through automated status updates.
+Reduce operational costs by 30% through automation.
+
+3. FUNCTIONAL REQUIREMENTS
+
+3.1 APPLICATION SUBMISSION
+Customers must be able to submit loan applications online.
+Required fields: Full name, Date of birth, PAN number, Monthly income, 
+Loan amount requested, Loan purpose, Employment type.
+System must validate PAN number format before submission.
+Duplicate applications within 30 days must be rejected automatically.
+
+3.2 ELIGIBILITY CHECK
+System must automatically check eligibility based on:
+- Minimum age: 21 years
+- Maximum age: 65 years at loan maturity
+- Minimum monthly income: Rs 25,000
+- Credit score minimum: 700
+- Maximum existing loan EMI: 50% of monthly income
+
+3.3 DOCUMENT VERIFICATION
+Required documents: ID proof, Address proof, Income proof, Bank statements
+System must send automated reminder if documents not uploaded within 48 hours.
+Documents must be verified within 24 hours of submission.
+
+3.4 APPROVAL WORKFLOW
+Applications under Rs 5 lakhs: Auto approval if all criteria met
+Applications Rs 5-25 lakhs: Branch manager approval required
+Applications above Rs 25 lakhs: Credit committee approval required
+System must notify customer of decision within 24 hours.
+
+3.5 DISBURSEMENT
+Approved loans must be disbursed within 48 hours of approval.
+Disbursement only to verified bank account of applicant.
+System must generate loan agreement automatically.
+
+4. NON FUNCTIONAL REQUIREMENTS
+System must handle 1000 concurrent applications.
+99.9% uptime required.
+All data must be encrypted at rest and in transit.
+System must comply with RBI guidelines for digital lending.
+
+5. INTEGRATION REQUIREMENTS
+Integration with CIBIL for credit score check.
+Integration with core banking system for disbursement.
+Integration with document verification service.
+SMS and email notification service integration required.
