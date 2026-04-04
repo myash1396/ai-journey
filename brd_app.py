@@ -187,8 +187,78 @@ else:
     st.success(f"✅ Analysis complete for: **{st.session_state.brd_name}**")
     st.divider()
 
-    # Display analysis
-    st.markdown(st.session_state.brd_analysis)
+    # Parse sections from analysis
+    analysis = st.session_state.brd_analysis
+
+    def extract_section(text, section_header, next_headers):
+        """Extract a specific section from the analysis text"""
+        start = text.find(section_header)
+        if start == -1:
+            return "Section not found in analysis."
+        start = text.find("\n", start) + 1
+        end = len(text)
+        for next_header in next_headers:
+            pos = text.find(next_header, start)
+            if pos != -1 and pos < end:
+                end = pos
+        return text[start:end].strip()
+
+    headers = [
+        "## 📋 REQUIREMENT SUMMARY",
+        "## 👤 USER STORIES",
+        "## 📐 BUSINESS RULES",
+        "## ⚠️ EDGE CASES",
+        "## ❓ DEVELOPER QUESTIONS",
+        "## 🚨 RISK FLAGS",
+        "## 📊 COMPLEXITY ASSESSMENT"
+    ]
+
+    summary = extract_section(analysis, headers[0], headers[1:])
+    user_stories = extract_section(analysis, headers[1], headers[2:])
+    business_rules = extract_section(analysis, headers[2], headers[3:])
+    edge_cases = extract_section(analysis, headers[3], headers[4:])
+    dev_questions = extract_section(analysis, headers[4], headers[5:])
+    risk_flags = extract_section(analysis, headers[5], headers[6:])
+    complexity = extract_section(analysis, headers[6], [])
+
+    # Display in tabs
+    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+        "📋 Summary",
+        "👤 User Stories",
+        "📐 Business Rules",
+        "⚠️ Edge Cases",
+        "❓ Dev Questions",
+        "🚨 Risk Flags",
+        "📊 Complexity"
+    ])
+
+    with tab1:
+        st.markdown("### 📋 Requirement Summary")
+        st.markdown(summary)
+
+    with tab2:
+        st.markdown("### 👤 User Stories")
+        st.markdown(user_stories)
+
+    with tab3:
+        st.markdown("### 📐 Business Rules")
+        st.markdown(business_rules)
+
+    with tab4:
+        st.markdown("### ⚠️ Edge Cases")
+        st.markdown(edge_cases)
+
+    with tab5:
+        st.markdown("### ❓ Developer Questions")
+        st.markdown(dev_questions)
+
+    with tab6:
+        st.markdown("### 🚨 Risk Flags")
+        st.markdown(risk_flags)
+
+    with tab7:
+        st.markdown("### 📊 Complexity Assessment")
+        st.markdown(complexity)
 
     st.divider()
 
@@ -204,4 +274,5 @@ else:
             st.success(f"✅ Report saved to: {output_path}")
 
     with col2:
-        st.code(st.session_state.brd_analysis, language=None)
+        with st.expander("📄 View Full Raw Analysis"):
+            st.markdown(st.session_state.brd_analysis)

@@ -1,7 +1,0 @@
-Date: 2026-03-30 00:06:47
-Summary Type: Brief
-
-SUMMARY:
-Here is a summary of the document in 5 sentences, focusing on the most critical information:
-
-This policy outlines the requirements for customer due diligence (CDD) procedures when onboarding new customers or reviewing existing relationships in retail banking. All new customers must provide valid government-issued photo identification and address verification using utility bills or bank statements not older than three months. Customers are classified into low, medium, and high risk categories based on factors such as income source, credit history, and industry. High-risk customers require enhanced due diligence procedures, including source of funds verification and senior management approval. All CDD records must be maintained for at least 7 years from account closure and made available to regulatory authorities upon request.
