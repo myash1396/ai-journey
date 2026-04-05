@@ -127,6 +127,8 @@ streamlit run brd_app_claude.py
 ---
 
 ## 📁 Project Structure
+````markdown
+```
 ai-journey/
 │
 ├── app.py                   → AI Banking Assistant web app
@@ -153,6 +155,8 @@ ai-journey/
 │
 ├── docs/                    → Test documents
 └── outputs/                 → Generated files (local only)
+```
+````
 ---
 
 ## 🧠 Technical Highlights
