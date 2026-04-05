@@ -1,52 +1,78 @@
 # AI Journey 🤖
 
-A collection of AI-powered tools built with Python and a locally running 
-LLM (Llama3 via Ollama). All tools run completely offline — no API keys, 
-no cloud, no data leaving your machine.
-
-Built as part of a structured AI learning journey focused on real-world 
-banking and finance use cases.
+A collection of AI-powered tools built with Python, focused on real-world
+banking and finance use cases. Built as part of a structured AI learning
+journey — from zero to deployed web applications in short time.
 
 ---
 
-## 🛠️ Tools Built
+## 🚀 Live Demo
 
-### 1. Email Reviewer (`email_reviewer.py`)
-Reviews and rewrites draft emails in your chosen tone.
-- Choose between Professional, Friendly or Formal tone
-- Powered by local Llama3 model
-- Banking domain optimized
+**Pega BRD Analyzer** — Live on Streamlit Cloud:
+👉 [https://ai-journey-myash-brd-analyzer.streamlit.app](https://ai-journey-myash-brd-analyzer.streamlit.app)
 
-### 2. Email Agent (`tools/email_agent.py`)
-An advanced email assistant with memory and file saving.
-- Remembers all emails reviewed in the same session
-- Modify previously rewritten emails
+---
+
+## 🛠️ What's Built
+
+### 🏦 AI Banking Assistant (`app.py`)
+A full multi-tool web application running in the browser.
+
+**Email Agent**
+- Review and rewrite draft emails with AI memory
+- Choose Professional, Friendly or Formal tone
+- Session history remembered automatically
 - Auto saves all outputs with timestamps
-- Session history tracking
 
-### 3. Document Summarizer (`tools/summarizer.py`)
-Summarizes any document in three different formats.
-- General summary with structured sections
-- Brief 5 sentence summary
-- Bullet points only
-- Load from file or paste text directly
+**Document Summarizer**
+- Upload TXT or PDF documents
+- Three summary formats — General, Brief, Bullet Points
+- Structured output with Purpose, Key Points, Risk Flags
 - Auto saves summaries with timestamps
 
-### 4. Master Agent (`master_agent.py`)
-A single app combining all tools plus Document Q&A.
-- Email reviewing
-- Document summarizing
-- Ask any question about any document
-- Full Q&A session saved with audit trail
+**Document Q&A**
+- Load any document and ask questions in plain English
+- AI answers using only the document content — no hallucination
+- Full Q&A session saved as audit trail
+- Supports TXT and PDF files
 
 ---
 
-## 🏦 Use Cases in Banking
+### 📋 Pega BRD Analyzer (`brd_app.py` / `brd_app_claude.py`)
+An AI powered Senior BA that analyzes Business Requirements Documents.
+
+**Two versions available:**
+- `brd_app.py` — runs on Llama3 locally, completely offline, free
+- `brd_app_claude.py` — runs on Claude API, significantly better output
+
+**Analysis produced:**
+- 📋 Requirement Summary
+- 👤 User Stories — properly formatted As a / I want / So that
+- 📐 Business Rules — numbered BR-XXX format
+- ⚠️ Edge Cases — gaps and unhandled scenarios EC-XXX format
+- ❓ Developer Questions — Pega specific DQ-XXX format
+- 🚨 Risk Flags — compliance and technical risks RF-XXX format
+- 📊 Complexity Assessment — rating and story point estimate
+
+---
+
+### 🖥️ Terminal Tools
+Earlier versions built during learning — fully functional CLI tools.
+
+- `email_reviewer.py` — Day 1 email reviewer
+- `tools/email_agent.py` — memory enabled email agent
+- `tools/summarizer.py` — document summarizer
+- `master_agent.py` — master terminal agent combining all tools
+
+---
+
+## 🏦 Banking Use Cases
 - Review and rewrite internal emails professionally
-- Summarize long policy documents and compliance reports
+- Summarize policy documents, compliance reports and BRDs
 - Query BRDs and architecture documents with natural language
 - Analyze loan agreements and regulatory documents
-- Generate audit trails of document analysis sessions
+- Auto extract user stories and business rules from requirements
+- Generate audit trails of all document analysis sessions
 
 ---
 
@@ -54,73 +80,116 @@ A single app combining all tools plus Document Q&A.
 
 ### Requirements
 - Python 3.14+
-- Ollama running locally
+- Ollama running locally (for local versions)
 - Llama3 model pulled via Ollama
+- Anthropic API key (for Claude version only)
 
 ### Installation
 
-1. Clone the repository
-```
+**1. Clone the repository**
+```bash
 git clone https://github.com/myash1396/ai-journey.git
 cd ai-journey
 ```
 
-2. Create and activate virtual environment
-```
+**2. Create and activate virtual environment**
+```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
-3. Install dependencies
-```
-pip install requests
+**3. Install dependencies**
+```bash
+pip install -r requirements.txt
 ```
 
-4. Make sure Ollama is running
-```
+**4. For local versions — make sure Ollama is running**
+```bash
 ollama serve
 ```
 
-5. Run any tool
+**5. Run the main web app**
+```bash
+streamlit run app.py
 ```
-python master_agent.py
+
+**6. Run the BRD Analyzer**
+```bash
+streamlit run brd_app.py
+```
+
+**7. For Claude API version — set your API key**
+```bash
+$env:ANTHROPIC_API_KEY="your-key-here"
+streamlit run brd_app_claude.py
 ```
 
 ---
 
 ## 📁 Project Structure
-```
 ai-journey/
+│
+├── app.py                   → AI Banking Assistant web app
+├── brd_app.py               → Pega BRD Analyzer (local Llama3)
+├── brd_app_claude.py        → Pega BRD Analyzer (Claude API)
+├── master_agent.py          → Terminal master agent
+├── email_reviewer.py        → Terminal email reviewer
+├── requirements.txt         → Python dependencies
 │
 ├── tools/
 │   ├── email_agent.py       → Memory enabled email agent
-│   └── summarizer.py        → Document summarizer
+│   ├── summarizer.py        → Document summarizer
+│   ├── brd_analyzer.py      → BRD analysis logic (local)
+│   ├── brd_analyzer_claude.py → BRD analysis logic (Claude API)
+│   └── pdf_reader.py        → PDF text extraction
+│
+├── prompts/
+│   ├── email_rewriter.md    → Email agent prompt
+│   ├── summarizer_general.md → General summary prompt
+│   ├── summarizer_brief.md  → Brief summary prompt
+│   ├── summarizer_bullet.md → Bullet point summary prompt
+│   ├── document_qa.md       → Document Q&A prompt
+│   └── brd_analyzer.md      → Senior BA analysis prompt
+│
 ├── docs/                    → Test documents
-├── outputs/                 → Generated files (local only)
-├── email_reviewer.py        → Basic email reviewer
-├── master_agent.py          → Master agent combining all tools
-└── README.md                → This file
-```
+└── outputs/                 → Generated files (local only)
+---
+
+## 🧠 Technical Highlights
+- **Local LLM integration** — Ollama + Llama3, fully offline
+- **Cloud LLM integration** — Anthropic Claude API
+- **Prompt engineering** — chain of thought, negative prompting,
+  few shot examples, temperature tuning
+- **Streamlit web apps** — multi page, session state, file upload
+- **PDF support** — pdfplumber for text extraction
+- **Error handling** — defensive programming, graceful degradation
+- **External prompt files** — prompt management system
+- **Live deployment** — Streamlit Community Cloud
 
 ---
 
-## 🚀 Journey
-This repository is being built day by day as part of a structured 
-AI learning journey. New tools and features added regularly.
+## 🗺️ Journey Progress
 
-**Week 1** — Python + AI foundations, local LLM integration  
-**Week 2** — Coming soon: Streamlit UI, web interface  
-**Week 3** — Coming soon: Agents, automation, decision making  
-**Week 4** — Coming soon: RAG, vector databases, multi document Q&A  
-**Week 5** — Coming soon: Portfolio, freelance, visibility  
+**Week 1 ✅** — Python + AI foundations, local LLM integration,
+terminal tools, document Q&A, master agent
+
+**Week 2 ✅** — Streamlit UI, prompt engineering, PDF support,
+error handling, BRD Analyzer, Claude API, live deployment
+
+**Week 3 🔜** — Agents, automation, decision making, web search
+
+**Week 4 🔜** — RAG, vector databases, multi document Q&A
+
+**Week 5 🔜** — Portfolio, freelance, visibility, launch
 
 ---
 
 ## 👤 About
-Pega developer with banking domain expertise, upskilling in AI 
-application development. Focused on building practical AI tools 
+Pega developer with banking domain expertise, upskilling in AI
+application development. Focused on building practical AI tools
 for regulated industries.
 
 ---
-*Built with Python 🐍 | Powered by Llama3 🦙 | Running locally 🔒*
-```
+
+*Built with Python 🐍 | Powered by Llama3 🦙 + Claude 🤖 |
+Local & Cloud ☁️ | Banking Domain 🏦*
