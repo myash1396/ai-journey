@@ -169,6 +169,10 @@ ai-journey/
 - **Error handling** — defensive programming, graceful degradation
 - **External prompt files** — prompt management system
 - **Live deployment** — Streamlit Community Cloud
+- **AI Evaluation** — DeepEval integration with Confident AI for 
+  automated faithfulness and relevancy testing of AI outputs
+- **Test Suite** — pytest based evaluation tests covering 
+  faithfulness, answer relevancy and hallucination detection
 
 ---
 
