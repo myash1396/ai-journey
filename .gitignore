@@ -2,3 +2,4 @@ venv/
 outputs/
 my_context.md
 URL.txt
+.env.local
