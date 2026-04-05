@@ -3,3 +3,9 @@ outputs/
 my_context.md
 URL.txt
 .env.local
+.deepeval
+.claude
+.deepeval_telemetry.txt
+.pytest_cache
+__pycache__/
+*.pyc
