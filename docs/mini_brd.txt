@@ -6,10 +6,11 @@ Bank needs a simple system extension in their existing application for customers
 
 2. REQUIREMENTS
 2.1 Customer enters their loan application ID on the web portal - new UI.
-2.2 System displays current status: Submitted, Under Review, Approved, Rejected.
-2.3 If approved, show loan amount and disbursement date.
-2.4 If rejected, show reason for rejection.
+2.2 System displays current status: Submitted, Under Review, Approved, Rejected. No New Stage needed.
+2.3 If approved, show loan amount and disbursement date in the new UI.
+2.4 If rejected, show reason for rejection in the new UI.
 2.5 Customer receives SMS notification when status changes.
+2.6 No other external APIs needed.
 
 3. USERS
 - Retail customers checking their own loan status
