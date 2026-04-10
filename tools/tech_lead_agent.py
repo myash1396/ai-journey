@@ -90,18 +90,19 @@ Tech Lead: Senior Pega Architect
 
 2. PEGA CASE DESIGN
    - Case type hierarchy (Top level + Child cases) - Add only as required - no unnecessary complexity
-   - Stage and process breakdown per case type
-   - Key data model fields per case type
+   - Stage and process breakdown per case type - Add only if explicitly required by BA analysis, do not add generic stages
+   - Key personas and portal access - Add only if explicitly required by BA analysis, do not add generic personas or portals
+   - Important decision rules and SLA rules - Add only if explicitly required by BA analysis, do not add generic rules
    - Assignment routing rules
 
 3. INTEGRATION ARCHITECTURE - (Note: Do not overcomplicate with too many integrations, only add if explicitly required by BA analysis)
-   - Each external system with integration pattern
+   - Each external system with integration pattern - only if explicitly required by BA analysis
    - API endpoint structure (REST/SOAP)
    - Error handling and retry strategy per integration
    - Authentication method per integration
 
-4. DATA MODEL - (Note:Keep it focused on key data elements needed for case design and integrations, do not overcomplicate with unnecessary data classes)
-   - Key data classes needed
+4. DATA MODEL - (Note:Keep it focused on key data elements needed for case design and integrations, do not overcomplicate with unnecessary data elements/classes)
+   - Key data classes only if needed
    - Important properties per class
    - Data relationships
    - External data sources mapped to Pega data pages
@@ -119,12 +120,12 @@ Tech Lead: Senior Pega Architect
    - Data encryption requirements
    - Audit requirements
 
-7. TECHNICAL RISKS - Max 5 significant technical risks with severity and mitigation
+7. TECHNICAL RISKS - Max 3 significant technical risks with severity and mitigation
    - TR-001 format
    - Each risk with severity and mitigation
    - [CONFIRMED/INFERRED/RECOMMENDED] tags
 
-8. DEVELOPER STORIES BREAKDOWN
+8. DEVELOPER STORIES BREAKDOWN - Max 5-6 critical developer stories derived from the BA user stories, focused on Pega implementation
    - Break BA user stories into technical tasks
    - Each story with Pega component to build
    - Story points per technical task
@@ -135,12 +136,13 @@ Tech Lead: Senior Pega Architect
    - Phase 2 components
    - Critical path items
 
-10. OPEN QUESTIONS FOR BUSINESS - Max 5 critical questions that need business clarification before development
+10. OPEN QUESTIONS FOR BUSINESS - Max 3 critical questions that need business clarification before development
     - TQ-001 format
     - Technical questions needing business clarification
 
 OUTPUT GUIDELINES:
-- Do not start with any preamble like "I now have all the information" or "Let me compile".
+- IMPORTANTt: Do not start with any preamble like "I now have all the information" or "Let me compile".
+- IMPORTANT: sections should only be filled if there is relevant information in the BA analysis. Do not add generic content or assumptions. If you add assumptions, clearly tag them as [ASSUMPTION].
 - Be comprehensive but concise. Do not hesitate to keep sections blank if need, do not add unnecessary information.
 - Start directly with TECHNICAL DESIGN DOCUMENT header.
 - Be precise and technical. This document is for Pega developers.
