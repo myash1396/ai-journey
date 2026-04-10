@@ -31,25 +31,25 @@ def read_document(filename: str) -> str:
 
 # ─── TOOL 2: WEB SEARCH ───
 web_search = TavilySearch(
-    max_results=3,
+    max_results=2,
     topic="general",
     include_answer=True,
     include_raw_content=False,
 )
 
-# ─── TOOL 3: BANKING KNOWLEDGE ───
+# ─── TOOL 3: PEGA KNOWLEDGE ───
 @tool
-def banking_knowledge(query: str) -> str:
+def pega_knowledge(query: str) -> str:
     """
-    Use for banking domain, Pega BPM, or regulatory clarifications.
-    Input should be a clear question about banking processes, RBI regulations, or Pega architecture.
+    Use for specific Pega implementation details, component configuration, or coding patterns.
+    Input should be a clear question about Pega development specifics.
     """
     from anthropic import Anthropic
     client = Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
     response = client.messages.create(
         model="claude-sonnet-4-6",
-        max_tokens=200,
-        system="You are a Senior BA with 15 years banking and Pega BPM experience. Answer concisely in 3 sentences max.",
+        max_tokens=150,
+        system="You are a Senior Pega Developer with 10 years experience. Answer in 2 sentences max about Pega implementation specifics.",
         messages=[{
             "role": "user",
             "content": query
@@ -58,7 +58,7 @@ def banking_knowledge(query: str) -> str:
     return response.content[0].text
 
 # ─── LLM SETUP ───
-tools = [read_document, web_search, banking_knowledge]
+tools = [read_document, web_search, pega_knowledge]
 
 llm = ChatAnthropic(
     model="claude-sonnet-4-6",
@@ -67,42 +67,66 @@ llm = ChatAnthropic(
 ).bind_tools(tools)
 
 # ─── SYSTEM PROMPT ───
-SYSTEM_PROMPT = """You are a Senior Business Analyst with 15 years experience in banking and Pega BPM.
-Your job is to analyze Business Requirements Documents thoroughly.
+SYSTEM_PROMPT = """You are a Senior Pega Developer with 10 years experience in banking implementations.
+You receive a Technical Design Document and produce implementation specifications.
 
-When given a BRD or requirements:
-1. Use read_document tool to read any referenced documents
-2. Use web_search to find relevant RBI regulations or banking standards
-3. Use banking_knowledge for domain clarifications
+Given a tech design:
+1. Use pega_knowledge for specific Pega implementation details if needed
+2. Use web_search only if you need specific Pega documentation
+3. Keep your output concise and focused
 
-Produce a structured analysis with:
-- REQUIREMENT SUMMARY: 2-3 sentence overview
-- USER STORIES: Format- As a [user], I want [action] so that [value] - Max 5
-- BUSINESS RULES: Numbered BR-001, BR-002 format - Max 5
-- EDGE CASES: Numbered EC-001, EC-002 format - Max 5
-- UI FLOW: Step by step user journey
-- PEGA SPECIFIC: ONLY IF NEEDED draft a case management life cycle stage/process/steps at high level, personas to be created, portals to be created
-- EXTERNAL INTEGRATIONS: Systems and APIs needed
-- RISK FLAGS: Compliance and technical risks RF-001 format - Max 5
-- DEVELOPER QUESTIONS: DQ-001 format, Pega specific - Max 5
-- COMPLEXITY: Low/Medium/High with story point estimate
+Produce implementation specs with these sections:
+
+IMPLEMENTATION SPECIFICATION
+=============================
+Project: [from tech design]
+Date: [today's date]
+Developer: Senior Pega Developer
+
+1. IMPLEMENTATION CHECKLIST
+   - Ordered list of Pega components to build
+   - Each item: Component Type | Component Name | Purpose
+   - Mark dependencies between components
+   - Maximum 8 items total
+
+2. DATA MODEL SPECS
+   - Class name and type (Data/Work/Abstract)
+   - Key properties with data type
+   - Maximum 5 classes
+
+3. BUSINESS LOGIC SPECS
+   - Each business rule with implementation approach
+   - Decision Table structure where applicable
+   - Maximum 8 rules
+
+4. INTEGRATION SPECS
+   - Each integration: Endpoint | Method | Auth | Error handling
+   - Maximum 3 integrations
+
+5. UI SPECS
+   - Key screens/harnesses needed
+   - Main sections per screen
+   - Maximum 3 screens
+
+6. ACCEPTANCE CRITERIA
+   - One per user story from BA analysis
+   - Format: Given [context] When [action] Then [result]
+   - Maximum 8 criteria
+
+7. OPEN ITEMS
+   - OI-001 format
+   - Items needing Tech Lead or BA clarification
+   - Maximum 3 items
 
 OUTPUT GUIDELINES:
-- IMPORTANT: PEGA SPECIFIC section should only be filled if there are specific requirements that impact case design, stage design, or portal design. Do not add Pega content unless explicitly required by the BRD.
-- Analyse and respond as per the requirement in the BRD. Do not add assumptions unless necessary. If you do, clearly tag them as [ASSUMPTION].
-- Be comprehensive but concise. Do not hesitate to keep sections blank if need, do not add unnecessary information.
-- A Tech Lead will use your output to design the technical architecture.
-- Prioritize by business impact. Flag critical items clearly.
-- For each item indicate source confidence:
-  [CONFIRMED] = Explicitly stated in BRD
-  [INFERRED] = Implied by BRD context
-  [RECOMMENDED] = Industry best practice, not in BRD
-- Do not start response with any preamble or introductory sentences.
-- Start directly with the BRD Analysis Report header.
-- Use today's actual date provided in the message for Analysis Date.
-- Tables are preferred for structured data.
-- Each section must have a clear header.
-"""
+- STRICTLY: Do not start with any preamble. Start directly with IMPLEMENTATION SPECIFICATION header.
+- IMPORTANT: All instructions and configurations to be done based on PEGA 24.1.4 version.
+- STRICTLY: Skip sections/leave blank saying "N/A" if not applicable as per the tech design. Do not invent details.
+- Be specific and implementable. Every item must be actionable.
+- Do not start with preamble.
+- Start directly with IMPLEMENTATION SPECIFICATION header.
+- Today's date will be provided in the message.
+- Keep total output under 1000 words."""
 
 # ─── NODE 1: AGENT NODE ───
 def agent_node(state: AgentState):
@@ -142,24 +166,17 @@ def build_agent():
 
     return graph.compile()
 
-# ─── ANALYZE BRD ───
-def analyze_brd(brd_text: str, context: str = None):
+# ─── CREATE IMPLEMENTATION SPECS ───
+def create_implementation(tech_design: str):
     print(f"\n{'='*60}")
-    print("BA Agent - BRD Analysis")
+    print("Developer Agent - Implementation Specification")
     print(f"{'='*60}\n")
 
     agent = build_agent()
 
     # Build the human message
     today = datetime.now().strftime("%B %d, %Y")
-    human_content = f"Today's date is {today}. Analyze this BRD:\n\n{brd_text}"
-    if context:
-        human_content += f"\n\nAdditional Context:\n{context}"
-
-    # Track steps for file output
-    steps_log = []
-    steps_log.append("BA Agent - BRD Analysis\n")
-    steps_log.append("=" * 60 + "\n")
+    human_content = f"Today's date is {today}. Create implementation specifications from this Technical Design Document:\n\n{tech_design}"
 
     final_answer = ""
     seen_tool_calls = set()
@@ -180,18 +197,14 @@ def analyze_brd(brd_text: str, context: str = None):
                 tool_id = tc.get("id", tc["name"])
                 if tool_id not in seen_tool_calls:
                     seen_tool_calls.add(tool_id)
-                    log = f"🔧 Tool called: {tc['name']}\n   Input: {tc['args']}"
-                    print(log)
-                    steps_log.append(log + "\n")
+                    print(f"🔧 Tool called: {tc['name']}\n   Input: {tc['args']}")
 
         # Show tool results - only ToolMessage type
         elif hasattr(last_message, "type") and last_message.type == "tool":
             tool_id = getattr(last_message, "tool_call_id", "")
             if tool_id not in seen_tool_results:
                 seen_tool_results.add(tool_id)
-                log = f"📊 Tool result: {last_message.content[:150]}..."
-                print(log)
-                steps_log.append(log + "\n")
+                print(f"📊 Tool result: {last_message.content[:150]}...")
 
         # Capture final answer
         elif hasattr(last_message, "content"):
@@ -199,27 +212,34 @@ def analyze_brd(brd_text: str, context: str = None):
                 if not (hasattr(last_message, "tool_calls") and last_message.tool_calls):
                     final_answer = last_message.content
 
-    print(f"\n✅ BA Analysis complete — output saved to file")
+    print(f"\n✅ Implementation Specs complete — output saved to file")
 
-    # Save to file - clean output only for Tech Lead
+    # Save to file - clean output only
     os.makedirs("outputs", exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_path = f"outputs/ba_analysis_{timestamp}.md"
+    output_path = f"outputs/developer_specs_{timestamp}.md"
 
-    # Only save the clean analysis - no tool logs
     with open(output_path, "w", encoding="utf-8") as f:
-        f.write(f"BA ANALYSIS REPORT\n")
-        f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write("="*60 + "\n\n")
         f.write(final_answer)
 
-    print(f"💾 Analysis saved to: {output_path}")
+    print(f"💾 Specs saved to: {output_path}")
+
     return final_answer
 
 # ─── TEST ───
 if __name__ == "__main__":
-    brd_file = os.path.join("docs", "mini_brd.txt")
-    with open(brd_file, "r", encoding="utf-8") as f:
-        brd_content = f.read()
+    # Find the most recent tech_lead_analysis file from outputs/
+    outputs_dir = "outputs"
+    tl_files = [f for f in os.listdir(outputs_dir) if f.startswith("tech_lead_analysis_") and f.endswith(".md")]
+    tl_files.sort(reverse=True)
 
-    analyze_brd(brd_content)
+    if not tl_files:
+        print("No tech lead analysis files found in outputs/ folder. Run tech_lead_agent.py first.")
+    else:
+        latest_tl = os.path.join(outputs_dir, tl_files[0])
+        print(f"Reading tech design from: {latest_tl}")
+
+        with open(latest_tl, "r", encoding="utf-8") as f:
+            tl_content = f.read()
+
+        create_implementation(tl_content)

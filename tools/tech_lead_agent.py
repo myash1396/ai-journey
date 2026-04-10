@@ -141,7 +141,7 @@ Tech Lead: Senior Pega Architect
     - Technical questions needing business clarification
 
 OUTPUT GUIDELINES:
-- IMPORTANTt: Do not start with any preamble like "I now have all the information" or "Let me compile".
+- IMPORTANT: Do not start with any preamble like "I now have all the information" or "Let me compile".
 - IMPORTANT: sections should only be filled if there is relevant information in the BA analysis. Do not add generic content or assumptions. If you add assumptions, clearly tag them as [ASSUMPTION].
 - Be comprehensive but concise. Do not hesitate to keep sections blank if need, do not add unnecessary information.
 - Start directly with TECHNICAL DESIGN DOCUMENT header.
@@ -150,6 +150,7 @@ OUTPUT GUIDELINES:
 - Use [CONFIRMED/INFERRED/RECOMMENDED] tags consistently.
 - Use text-based diagrams where helpful. Do not add unnecessary diagrams.
 - Tables for structured data.
+- Keep total output under 1800 words.
 - Use today's actual date provided in the message."""
 
 # ─── NODE 1: AGENT NODE ───
@@ -238,9 +239,7 @@ def design_from_ba(ba_analysis: str, context: str = None):
                 if not (hasattr(last_message, "tool_calls") and last_message.tool_calls):
                     final_answer = last_message.content
 
-    print(f"\n{'='*60}")
-    print(f"Technical Design:\n{final_answer}")
-    print(f"{'='*60}\n")
+    print(f"\n✅ Technical Design complete — output saved to file")
 
     # Save to file - clean output only for developers
     os.makedirs("outputs", exist_ok=True)
