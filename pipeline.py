@@ -5,7 +5,7 @@ from tools.tech_lead_agent import design_from_ba
 from tools.developer_agent import create_implementation
 from tools.reviewer_agent import review_implementation
 
-MAX_REVIEW_ITERATIONS = 2  # max times developer can revise
+MAX_REVIEW_ITERATIONS = 1  # max times developer can revise
 
 def word_count(text: str) -> int:
     return len(text.split()) if text else 0

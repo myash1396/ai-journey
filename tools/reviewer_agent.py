@@ -103,11 +103,17 @@ Reviewer: Senior QA Lead
    If REVISION NEEDED - list top 3 items developer must fix before resubmission.
 
 OUTPUT GUIDELINES:
+- IMPORTANT: Do not start with preambles like "I have information for this review"
+- Start the output directly with the REVIEW REPORT header.
 - Be objective and specific.
 - Do not start with preamble.
 - Start directly with REVIEW REPORT header.
 - Keep total output under 500 words.
-- Always end with VERDICT line."""
+- Always end with VERDICT line.
+- IMPORTANT: Calibrate your review to the complexity of the spec.
+  For simple small requirements - only flag CRITICAL and MAJOR issues.
+  Do not fail a simple spec for minor naming conventions.
+  VERDICT: APPROVED if only MINOR issues remain."""
 
 # ─── NODE 1: AGENT NODE ───
 def agent_node(state: AgentState):
