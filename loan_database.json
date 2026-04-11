@@ -1,0 +1,48 @@
+{
+  "loans": {
+    "LOAN001": {
+      "loan_id": "LOAN001",
+      "customer_id": "CUST001",
+      "customer_name": "Rahul Sharma",
+      "loan_type": "Personal Loan",
+      "amount": 500000,
+      "status": "Approved",
+      "applied_date": "2026-04-01",
+      "disbursement_date": "2026-04-12",
+      "rejection_reason": null
+    },
+    "LOAN002": {
+      "loan_id": "LOAN002",
+      "customer_id": "CUST001",
+      "customer_name": "Rahul Sharma",
+      "loan_type": "Home Loan",
+      "amount": 2500000,
+      "status": "Approved",
+      "applied_date": "2026-03-15",
+      "disbursement_date": "2026-04-05",
+      "rejection_reason": null
+    },
+    "LOAN003": {
+      "loan_id": "LOAN003",
+      "customer_id": "CUST002",
+      "customer_name": "Priya Patel",
+      "loan_type": "Vehicle Loan",
+      "amount": 800000,
+      "status": "Rejected",
+      "applied_date": "2026-03-20",
+      "disbursement_date": null,
+      "rejection_reason": "Credit score below minimum threshold"
+    },
+    "LOAN004": {
+      "loan_id": "LOAN004",
+      "customer_id": "CUST002",
+      "customer_name": "Priya Patel",
+      "loan_type": "Personal Loan",
+      "amount": 300000,
+      "status": "Submitted",
+      "applied_date": "2026-04-10",
+      "disbursement_date": null,
+      "rejection_reason": null
+    }
+  }
+}
