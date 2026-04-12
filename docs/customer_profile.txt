@@ -1,0 +1,37 @@
+CUSTOMER LOAN APPLICATION PROFILE
+===================================
+Customer ID: CUST001
+Customer Name: Rahul Sharma
+Loan Application ID: LOAN001
+Loan Type: Personal Loan
+Requested Amount: Rs 5,00,000
+Requested Tenure: 5 years
+
+FINANCIAL PROFILE:
+------------------
+Monthly Income: Rs 85,000
+Existing EMIs: Rs 12,000/month
+Employment Type: Salaried
+Employer: Infosys Ltd
+Employment Tenure: 4 years
+
+CREDIT PROFILE:
+---------------
+CIBIL Score: 742
+Credit History: Good - no defaults
+Existing Loans: 1 (Car loan - Rs 12,000 EMI)
+
+ELIGIBILITY CHECK:
+------------------
+Age: 32 years
+Monthly Income: Rs 85,000
+FOIR (existing): 14.1% (Rs 12,000 / Rs 85,000)
+PAN: ABCDE1234F (verified)
+KYC Status: Complete
+
+BANK VERIFICATION:
+------------------
+Bank Account: HDFC Bank
+Account Number: XXXX1234
+Account Status: Active
+Average Monthly Balance: Rs 45,000
