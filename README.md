@@ -37,6 +37,52 @@ A full multi-tool web application running in the browser.
 - Supports TXT and PDF files
 
 ---
+## 🤖 Multi-Agent Pipeline — Sprint 0 Accelerator
+
+An end-to-end AI pipeline that transforms a Business Requirements 
+Document into implementation-ready specifications in minutes.
+
+### Pipeline Architecture
+BRD Input → BA Agent → Tech Lead Agent → Developer Agent ↔ Reviewer Agent
+(feedback loop, VERDICT routing)
+
+### Agents Built
+| Agent | Role | Tools |
+|-------|------|-------|
+| BA Agent | Requirements analysis | read_document, web_search, banking_knowledge |
+| Tech Lead Agent | Technical design | read_document, web_search, pega_knowledge |
+| Developer Agent | Implementation specs | read_document, web_search, pega_knowledge |
+| Reviewer Agent | Quality review | read_document, pega_knowledge |
+
+### Key Features
+- Automated BRD analysis with RBI regulatory gap detection
+- Pega 24.1.4 specific implementation specifications
+- Developer ↔ Reviewer feedback loop with VERDICT routing
+- Modern dark theme dashboard UI (Sprint 0 Accelerator)
+- Full pipeline cost ~37 cents per run
+- All outputs saved as markdown files
+
+### MCP Server — retailLoan Integration
+Built a Model Context Protocol server connecting Claude to a 
+simulated banking loan management system.
+
+Tools:
+- get_loan_status — retrieve loan application details
+- update_loan_status — update loan status in system
+- get_customer_loans — get all loans for a customer
+
+Demonstrated real banking workflow:
+- Agent reads customer profile
+- Searches current RBI repo rate
+- Calculates applicable interest rate based on CIBIL score
+- Makes approval/rejection decision
+- Updates loan status in system automatically
+
+## 🧪 AI Evaluation
+- DeepEval integration with Confident AI
+- Faithfulness, relevancy and hallucination detection
+- pytest based evaluation suite
+---
 
 ### 📋 Pega BRD Analyzer (`brd_app.py` / `brd_app_claude.py`)
 An AI powered Senior BA that analyzes Business Requirements Documents.
