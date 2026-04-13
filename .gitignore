@@ -9,3 +9,5 @@ URL.txt
 .pytest_cache
 __pycache__/
 *.pyc
+
+chroma_db/
