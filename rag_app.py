@@ -321,16 +321,119 @@ textarea:focus, input[type="text"]:focus {
 }
 [data-testid="stFileUploader"]:hover { border-color: var(--accent) !important; }
 
-/* ─── EXPANDER ─── */
-[data-testid="stExpander"] {
-    background-color: var(--bg-card) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 12px !important;
-    margin: 6px 0 !important;
+/* ─── HISTORY CARDS ─── */
+.history-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
 }
-[data-testid="stExpander"] summary { color: var(--text-primary) !important; }
-[data-testid="stExpander"] details summary::before { content: "▶ " !important; }
-[data-testid="stExpander"][open] details summary::before { content: "▼ " !important; }
+.history-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.08);
+}
+.history-card.no-match {
+    border-left-color: var(--warning);
+}
+.history-card.no-match:hover {
+    border-color: var(--warning);
+    box-shadow: 0 0 15px rgba(255, 170, 0, 0.08);
+}
+
+.history-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.history-status {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+.history-status.answered {
+    background: rgba(0, 255, 136, 0.15);
+    color: var(--success) !important;
+    border: 1px solid var(--success);
+}
+.history-status.no-match {
+    background: rgba(255, 170, 0, 0.15);
+    color: var(--warning) !important;
+    border: 1px solid var(--warning);
+}
+.history-time {
+    font-size: 0.72rem;
+    color: var(--text-muted) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    letter-spacing: 0.5px;
+}
+
+.history-question {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary) !important;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.history-chunks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+.history-chunk-pill {
+    font-size: 0.7rem;
+    font-family: 'JetBrains Mono', monospace !important;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid;
+}
+.history-chunk-pill.green {
+    background: rgba(0, 255, 136, 0.08);
+    color: var(--success) !important;
+    border-color: rgba(0, 255, 136, 0.35);
+}
+.history-chunk-pill.amber {
+    background: rgba(255, 170, 0, 0.08);
+    color: var(--warning) !important;
+    border-color: rgba(255, 170, 0, 0.35);
+}
+.history-chunk-pill.red {
+    background: rgba(255, 68, 68, 0.08);
+    color: var(--error) !important;
+    border-color: rgba(255, 68, 68, 0.35);
+}
+
+.history-body {
+    background: rgba(0, 212, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--text-secondary) !important;
+    margin-bottom: 10px;
+}
+.history-body-warn {
+    background: rgba(255, 170, 0, 0.06);
+    border-color: rgba(255, 170, 0, 0.35);
+    color: var(--warning) !important;
+    font-style: italic;
+}
+
+.history-cost {
+    font-size: 0.72rem;
+    color: var(--text-muted) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    text-align: right;
+}
 
 hr { border-color: var(--border) !important; opacity: 0.5; }
 
@@ -708,21 +811,21 @@ with st.sidebar:
     st.markdown("---")
 
     # ── Tuning ──
-    with st.expander("⚙️ Tuning Parameters", expanded=False):
-        n_results = st.slider(
-            "Retrieved Chunks (n_results)",
-            min_value=1, max_value=10, value=3, step=1, key="n_results"
-        )
-        distance_threshold = st.slider(
-            "Distance Threshold",
-            min_value=0.5, max_value=2.0, value=1.5, step=0.1, key="distance_threshold"
-        )
-        st.markdown("""
-        <div style="font-size: 0.75rem; color: #94a3b8; line-height: 1.6; margin-top: 8px;">
-            <b style="color:#00d4ff;">n_results</b> — how many chunks to pull from the vector store.<br>
-            <b style="color:#00d4ff;">threshold</b> — reject queries whose best chunk distance exceeds this value (saves API cost).
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-label">⚙️ Tuning Parameters</div>', unsafe_allow_html=True)
+    n_results = st.slider(
+        "Retrieved Chunks (n_results)",
+        min_value=1, max_value=10, value=3, step=1, key="n_results"
+    )
+    distance_threshold = st.slider(
+        "Distance Threshold",
+        min_value=0.5, max_value=2.0, value=1.5, step=0.1, key="distance_threshold"
+    )
+    st.markdown("""
+    <div style="font-size: 0.75rem; color: #94a3b8; line-height: 1.6; margin-top: 8px;">
+        <b style="color:#00d4ff;">n_results</b> — how many chunks to pull from the vector store.<br>
+        <b style="color:#00d4ff;">threshold</b> — reject queries whose best chunk distance exceeds this value (saves API cost).
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # ─── MAIN AREA ───
@@ -872,31 +975,65 @@ if len(st.session_state.chat_history) > 1:
     # Reverse order, skip the latest (already shown above)
     history = list(reversed(st.session_state.chat_history[:-1]))
     for i, item in enumerate(history):
-        label_icon = "⚠️" if item.get("no_match") else "✅"
-        status = "No match" if item.get("no_match") else "Answered"
-        title = f"[{item['timestamp']}] {status} - {item['question'][:80]}"
-        with st.expander(title):
-            # Summary of chunks
-            if item["chunks"]:
-                summary_parts = []
-                for idx, c in enumerate(item["chunks"], 1):
-                    tier, _ = distance_tier(c["distance"])
-                    color = {"green": "#00ff88", "amber": "#ffaa00", "red": "#ff4444"}[tier]
-                    summary_parts.append(
-                        f'<span style="color:{color};font-family:JetBrains Mono,monospace;">'
-                        f'#{idx} {c["source"]} ({c["distance"]:.3f})</span>'
-                    )
-                st.markdown(
-                    "<div style='font-size:0.8rem; margin-bottom:10px;'>"
-                    + " · ".join(summary_parts) + "</div>",
-                    unsafe_allow_html=True
-                )
+        is_no_match = item.get("no_match", False)
+        status_label = "NO MATCH" if is_no_match else "ANSWERED"
+        status_class = "no-match" if is_no_match else "answered"
 
-            if item.get("no_match"):
-                st.warning("No relevant chunks matched — Claude was not called.")
-            elif item["answer"]:
-                st.markdown(item["answer"])
-                st.caption(f"Est. cost: ${item['cost']:.4f}")
+        # HTML-escape user content
+        q_safe = (item["question"]
+                  .replace("&", "&amp;")
+                  .replace("<", "&lt;")
+                  .replace(">", "&gt;"))
+
+        # Chunk summary row
+        chunk_summary = ""
+        if item["chunks"]:
+            parts = []
+            for idx, c in enumerate(item["chunks"], 1):
+                tier, _ = distance_tier(c["distance"])
+                src_safe = c["source"].replace("<", "&lt;").replace(">", "&gt;")
+                parts.append(
+                    f'<span class="history-chunk-pill {tier}">'
+                    f'#{idx} {src_safe} · {c["distance"]:.3f}'
+                    f'</span>'
+                )
+            chunk_summary = (
+                '<div class="history-chunks">' + "".join(parts) + "</div>"
+            )
+
+        # Body: answer or no-match notice
+        if is_no_match:
+            body_html = (
+                '<div class="history-body history-body-warn">'
+                'No relevant chunks matched — Claude was not called.'
+                '</div>'
+            )
+        else:
+            ans_safe = (item.get("answer") or "")
+            ans_safe = (ans_safe.replace("&", "&amp;")
+                                 .replace("<", "&lt;")
+                                 .replace(">", "&gt;")
+                                 .replace("\n", "<br>"))
+            body_html = f'<div class="history-body">{ans_safe}</div>'
+
+        cost_html = (
+            f'<div class="history-cost">💰 Est. cost: '
+            f'${item.get("cost", 0.0):.4f}</div>'
+        )
+
+        with st.container():
+            st.markdown(f"""
+            <div class="history-card {status_class}">
+                <div class="history-head">
+                    <span class="history-status {status_class}">{status_label}</span>
+                    <span class="history-time">🕒 {item['timestamp']}</span>
+                </div>
+                <div class="history-question">{q_safe}</div>
+                {chunk_summary}
+                {body_html}
+                {cost_html}
+            </div>
+            """, unsafe_allow_html=True)
 
 
 # ─── FOOTER ───
