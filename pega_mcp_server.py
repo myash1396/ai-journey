@@ -144,7 +144,7 @@ def create_case(
 ) -> str:
     """Create a new loan case. Simulates Pega DX API POST /cases endpoint."""
     # Input validation
-    valid_case_types = ["PersonalLoan", "HomeLoan", "AutoLoan"]
+    valid_case_types = ["PersonalLoan", "HomeLoan", "AutoLoan", "Sprint0Implementation"]
     if case_type not in valid_case_types:
         return json.dumps(
             {
