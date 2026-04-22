@@ -487,7 +487,19 @@ def dev_node(state: PipelineState) -> dict:
         f"technical design:\n\n{state['tl_output']}"
     )
     if iteration >= 1 and state.get("rev_output"):
-        query = base + "\n\n---REVIEWER FEEDBACK---\n" + state["rev_output"]
+        # Extract specific issues from reviewer feedback for developer to address
+        rev_text = state["rev_output"]
+        query = (
+            f"Today's date is {_today()}. You are REVISING your previous implementation specs "
+            f"based on reviewer feedback.\n\n"
+            f"ORIGINAL TECHNICAL DESIGN:\n{state['tl_output']}\n\n"
+            f"YOUR PREVIOUS IMPLEMENTATION SPEC:\n{state['dev_output']}\n\n"
+            f"REVIEWER FEEDBACK:\n{rev_text}\n\n"
+            f"INSTRUCTIONS: Address EVERY issue listed by the reviewer. "
+            f"For each issue, make the specific fix requested. "
+            f"Produce the COMPLETE revised implementation specification — "
+            f"not just the changes, the full document with fixes applied."
+        )
     else:
         query = base
 
