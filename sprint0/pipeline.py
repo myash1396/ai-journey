@@ -587,7 +587,10 @@ def _extract_project_name(ba_output: str, brd_file: str) -> str:
     for line in (ba_output or "").splitlines():
         low = line.lower()
         if "project:" in low:
-            return line.split(":", 1)[1].strip()
+            name = line.split(":", 1)[1].strip()
+            # Clean markdown formatting
+            name = name.replace("**", "").replace("*", "").strip()
+            return name
     return os.path.splitext(os.path.basename(brd_file))[0]
 
 

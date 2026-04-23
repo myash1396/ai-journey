@@ -160,7 +160,7 @@ def create_case(
     if not customer_id or not customer_id.strip():
         return json.dumps({"status": "error", "message": "customer_id must not be empty."}, indent=2)
 
-    if loan_amount <= 0:
+    if case_type != "Sprint0Implementation" and loan_amount <= 0:
         return json.dumps({"status": "error", "message": "loan_amount must be greater than 0."}, indent=2)
 
     if not (300 <= cibil_score <= 900):
@@ -168,7 +168,7 @@ def create_case(
             {"status": "error", "message": "cibil_score must be between 300 and 900."}, indent=2
         )
 
-    if monthly_income <= 0:
+    if case_type != "Sprint0Implementation" and monthly_income <= 0:
         return json.dumps({"status": "error", "message": "monthly_income must be greater than 0."}, indent=2)
 
     cases = load_cases()

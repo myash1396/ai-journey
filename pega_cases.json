@@ -150,5 +150,24 @@
     "stage": "ApplicationReview",
     "riskFlag": true,
     "riskReason": "Potential fraud: Income documents inconsistent with stated employment, property valuation report from unverified agency, address mismatch in KYC documents"
+  },
+  {
+    "caseID": "L-1009",
+    "caseType": "Sprint0Implementation",
+    "status": "Open",
+    "createDate": "2026-04-23",
+    "lastUpdateDate": "2026-04-23",
+    "customerName": "Internal",
+    "customerID": "AUTO",
+    "loanAmount": 0,
+    "cibilScore": 750,
+    "monthlyIncome": 0,
+    "existingEMI": 0,
+    "requestedTenure": null,
+    "assignedTo": null,
+    "urgency": "20",
+    "stage": "ApplicationReview",
+    "riskFlag": false,
+    "riskReason": null
   }
 ]
