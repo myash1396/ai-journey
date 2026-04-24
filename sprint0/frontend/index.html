@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprint 0 Accelerator — Mission Control</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0F1419;
+      --bg-card: #1A2332;
+      --bg-card-2: #1F2937;
+      --border: #2A3442;
+      --border-strong: #3A4656;
+      --amber: #D4A574;
+      --amber-dim: #8B6F4E;
+      --amber-glow: rgba(212, 165, 116, 0.35);
+      --sage: #7BAE7F;
+      --sage-glow: rgba(123, 174, 127, 0.25);
+      --coral: #C9735B;
+      --coral-glow: rgba(201, 115, 91, 0.25);
+      --text: #E8E2D8;
+      --text-muted: #8B95A5;
+      --text-dim: #5A6472;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body, #root {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Subtle grain texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.4;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle at 20% 20%, rgba(212, 165, 116, 0.04), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(123, 174, 127, 0.03), transparent 40%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.09 0 0 0 0 0.10 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    #root {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* ============ SCROLLBARS ============ */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--amber-dim);
+    }
+
+    /* ============ TYPOGRAPHY ============ */
+    .display {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ============ HEADER ============ */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 28px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(26, 35, 50, 0.6), transparent);
+      flex-shrink: 0;
+    }
+    .header-left .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--text);
+    }
+    .header-left .title span {
+      color: var(--amber);
+    }
+    .header-left .subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .header-right {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    .header-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .header-stat .label {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .header-stat .value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      color: var(--text);
+      margin-top: 2px;
+    }
+    .connection {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--bg-card);
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-dim);
+    }
+    .dot.healthy { background: var(--sage); box-shadow: 0 0 8px var(--sage-glow); }
+    .dot.error { background: var(--coral); box-shadow: 0 0 8px var(--coral-glow); }
+    .connection-label {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ============ LAYOUT ============ */
+    .app-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    .left-panel {
+      width: 340px;
+      flex-shrink: 0;
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background: rgba(15, 20, 25, 0.6);
+    }
+    .main-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ============ CARDS ============ */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .card-section {
+      margin-bottom: 12px;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header .eyebrow {
+      color: var(--amber);
+    }
+
+    /* ============ DROPZONE ============ */
+    .dropzone {
+      border: 1px dashed var(--border-strong);
+      border-radius: 8px;
+      padding: 20px 14px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(212, 165, 116, 0.02);
+    }
+    .dropzone:hover {
+      border-color: var(--amber);
+      background: rgba(212, 165, 116, 0.05);
+    }
+    .dropzone.has-file {
+      border-style: solid;
+      border-color: var(--amber-dim);
+    }
+    .dropzone-icon {
+      font-size: 20px;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+    .dropzone-text {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .dropzone-file {
+      font-size: 12px;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+    input[type="file"] { display: none; }
+
+    /* ============ BUTTONS ============ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-card-2);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    .btn:hover:not(:disabled) {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .btn-primary {
+      background: linear-gradient(180deg, var(--amber), #B8895A);
+      border-color: var(--amber);
+      color: #1A1208;
+      font-weight: 600;
+    }
+    .btn-primary:hover:not(:disabled) {
+      color: #0F1419;
+      filter: brightness(1.1);
+      box-shadow: 0 0 16px var(--amber-glow);
+    }
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 10px;
+      width: auto;
+    }
+    .btn-danger {
+      color: var(--coral);
+      border-color: transparent;
+      background: transparent;
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(201, 115, 91, 0.1);
+      border-color: var(--coral);
+      color: var(--coral);
+    }
+
+    /* ============ SLIDER ============ */
+    .slider-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .slider-value {
+      color: var(--amber);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 6px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--amber);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 8px var(--amber-glow);
+    }
+
+    /* ============ HELPER TEXT ============ */
+    .helper-text {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: rgba(212, 165, 116, 0.04);
+      border-left: 2px solid var(--amber-dim);
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* ============ DOCUMENT LIST ============ */
+    .doc-list {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    .doc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      transition: border-color 0.3s ease;
+    }
+    .doc-item:hover { border-color: var(--border-strong); }
+    .doc-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      margin-right: 8px;
+    }
+    .doc-chunks {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-right: 6px;
+    }
+    .stats-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .mini-stat {
+      flex: 1;
+      text-align: center;
+    }
+    .mini-stat .v {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      color: var(--amber);
+    }
+    .mini-stat .l {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-dim);
+    }
+
+    /* ============ AGENT CARDS ============ */
+    .agent-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      position: relative;
+    }
+    .agent-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      position: relative;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    .agent-card.running {
+      border-color: var(--amber);
+      box-shadow: 0 0 24px var(--amber-glow), inset 0 0 0 1px var(--amber-dim);
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+    .agent-card.complete {
+      border-color: var(--sage);
+      box-shadow: inset 0 0 0 1px rgba(123, 174, 127, 0.3);
+    }
+    .agent-card.error {
+      border-color: var(--coral);
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 24px var(--amber-glow); }
+      50% { box-shadow: 0 0 40px var(--amber-glow), 0 0 80px rgba(212, 165, 116, 0.15); }
+    }
+    .agent-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+    .agent-role {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 14px;
+    }
+    .agent-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .status-pill {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      flex-shrink: 0;
+    }
+    .status-pill.running {
+      background: var(--amber);
+      box-shadow: 0 0 8px var(--amber);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    .status-pill.complete { background: var(--sage); box-shadow: 0 0 6px var(--sage); }
+    .status-pill.error { background: var(--coral); box-shadow: 0 0 6px var(--coral); }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.3); }
+    }
+    .agent-metrics {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+    }
+    .agent-metric-label {
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 9px;
+    }
+    .agent-metric-value {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    /* Arrow flow between cards */
+    .flow-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--border-strong);
+      font-size: 18px;
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+    .flow-arrow.active { color: var(--amber); }
+
+    /* ============ PIPELINE PROGRESS ============ */
+    .progress-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .progress-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .progress-message {
+      font-size: 13px;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+    .progress-message .dots::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      text-align: left;
+      animation: dots 1.4s steps(4) infinite;
+    }
+    @keyframes dots {
+      0% { content: ''; }
+      25% { content: '.'; }
+      50% { content: '..'; }
+      75% { content: '...'; }
+    }
+    .verdict-badge {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      border: 1px solid;
+    }
+    .verdict-approved {
+      color: var(--sage);
+      border-color: var(--sage);
+      background: var(--sage-glow);
+    }
+    .verdict-revision {
+      color: var(--amber);
+      border-color: var(--amber);
+      background: var(--amber-glow);
+    }
+    .verdict-unknown {
+      color: var(--coral);
+      border-color: var(--coral);
+      background: var(--coral-glow);
+    }
+    .progress-metrics {
+      display: flex;
+      gap: 22px;
+    }
+    .progress-metric {
+      text-align: right;
+    }
+    .progress-metric .l {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .progress-metric .v {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      color: var(--text);
+      margin-top: 2px;
+    }
+    .case-banner {
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      background: var(--sage-glow);
+      border: 1px solid var(--sage);
+      color: var(--sage);
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ============ TABS ============ */
+    .tabs-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 400px;
+    }
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      padding: 0 4px;
+    }
+    .tab {
+      padding: 14px 20px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active {
+      color: var(--amber);
+      border-bottom-color: var(--amber);
+    }
+    .tab-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      font-size: 9px;
+      background: var(--border-strong);
+      color: var(--text);
+    }
+    .tab.active .tab-badge {
+      background: var(--amber);
+      color: var(--bg);
+    }
+    .sub-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 10px 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .sub-tab {
+      padding: 6px 12px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .sub-tab.active {
+      color: var(--amber);
+      border-color: var(--amber-dim);
+      background: rgba(212, 165, 116, 0.08);
+    }
+    .tab-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+    }
+    .tab-meta {
+      display: flex;
+      gap: 18px;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .tab-meta strong {
+      color: var(--amber);
+      font-family: 'JetBrains Mono', monospace;
+      margin-left: 4px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+    .output-content {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.75;
+      color: var(--text);
+    }
+    .empty-state {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+    .empty-state .big {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-style: italic;
+    }
+
+    /* ============ RUN HISTORY ============ */
+    .history-bar {
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      padding: 12px 28px;
+      background: rgba(15, 20, 25, 0.8);
+      max-height: 110px;
+      overflow-y: auto;
+    }
+    .history-title {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .history-row {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .history-card {
+      flex-shrink: 0;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-card);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 180px;
+    }
+    .history-card:hover {
+      border-color: var(--amber);
+      background: var(--bg-card-2);
+    }
+    .history-card .run-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--amber);
+    }
+    .history-card .meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      gap: 8px;
+    }
+    .history-empty {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* ============ ERRORS ============ */
+    .error-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .error-item {
+      padding: 10px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--coral);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--coral);
+      max-width: 340px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 1100px) {
+      .app-body { flex-direction: column; }
+      .left-panel { width: 100%; border-right: none; border-bottom: 1px solid var(--border); max-height: 40vh; }
+      .agent-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .header-right { display: none; }
+      .agent-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-type="module">
+    const { useState, useEffect, useRef, useCallback } = React;
+    const API = "http://localhost:8000";
+
+    // ---------- API helpers ----------
+    async function jfetch(path, opts = {}) {
+      const r = await fetch(`${API}${path}`, opts);
+      if (!r.ok) {
+        const detail = await r.text().catch(() => r.statusText);
+        throw new Error(`${r.status} ${detail}`);
+      }
+      return r.json();
+    }
+
+    const AGENTS = [
+      { key: "ba", name: "BA", role: "Business Analyst" },
+      { key: "tl", name: "TL", role: "Tech Lead" },
+      { key: "dev", name: "DEV", role: "Developer" },
+      { key: "rev", name: "REV", role: "Reviewer" },
+    ];
+
+    // ---------- App ----------
+    function App() {
+      const [apiHealthy, setApiHealthy] = useState(false);
+      const [stats, setStats] = useState({ total_documents: 0, total_chunks: 0 });
+      const [documents, setDocuments] = useState([]);
+
+      const [brdFile, setBrdFile] = useState("");
+      const [brdFilename, setBrdFilename] = useState("");
+      const [pendingBrd, setPendingBrd] = useState(null);
+      const [maxIterations, setMaxIterations] = useState(2);
+
+      const [runId, setRunId] = useState("");
+      const [pipelineStatus, setPipelineStatus] = useState("idle"); // idle|running|completed|failed
+      const [agentStatus, setAgentStatus] = useState({});
+      const [costs, setCosts] = useState({});
+      const [verdict, setVerdict] = useState("");
+      const [iterations, setIterations] = useState(0);
+
+      const [outputs, setOutputs] = useState({ ba: "", tl: "", dev: "", rev: "" });
+      const [devHistory, setDevHistory] = useState([]);
+      const [revHistory, setRevHistory] = useState([]);
+      const [caseCreated, setCaseCreated] = useState("");
+      const [totalCost, setTotalCost] = useState(0);
+
+      const [pipelineRuns, setPipelineRuns] = useState([]);
+      const [activeTab, setActiveTab] = useState("ba");
+      const [devIter, setDevIter] = useState(0);
+      const [revIter, setRevIter] = useState(0);
+
+      const [uploadingBrd, setUploadingBrd] = useState(false);
+      const [uploadingDoc, setUploadingDoc] = useState(false);
+      const [startingRun, setStartingRun] = useState(false);
+      const [errors, setErrors] = useState([]);
+
+      const pollRef = useRef(null);
+
+      const pushError = useCallback((msg) => {
+        const id = Date.now() + Math.random();
+        setErrors((e) => [...e, { id, msg: String(msg) }]);
+        setTimeout(() => setErrors((e) => e.filter((x) => x.id !== id)), 5500);
+      }, []);
+
+      // ---------- initial load ----------
+      const loadHealth = useCallback(async () => {
+        try { await jfetch("/api/health"); setApiHealthy(true); }
+        catch { setApiHealthy(false); }
+      }, []);
+
+      const loadStats = useCallback(async () => {
+        try { setStats(await jfetch("/api/stats")); } catch (e) { pushError(`Stats: ${e.message}`); }
+      }, [pushError]);
+
+      const loadDocuments = useCallback(async () => {
+        try { setDocuments(await jfetch("/api/documents")); } catch (e) { pushError(`Docs: ${e.message}`); }
+      }, [pushError]);
+
+      const loadRuns = useCallback(async () => {
+        try { setPipelineRuns(await jfetch("/api/pipeline/runs")); } catch (e) { pushError(`Runs: ${e.message}`); }
+      }, [pushError]);
+
+      useEffect(() => {
+        loadHealth();
+        loadStats();
+        loadDocuments();
+        loadRuns();
+        const healthInt = setInterval(loadHealth, 15000);
+        return () => {
+          clearInterval(healthInt);
+          if (pollRef.current) clearInterval(pollRef.current);
+        };
+      }, [loadHealth, loadStats, loadDocuments, loadRuns]);
+
+      // ---------- BRD upload ----------
+      const handleBrdSelect = (e) => {
+        const f = e.target.files?.[0];
+        if (f) { setPendingBrd(f); setBrdFilename(f.name); setBrdFile(""); }
+      };
+
+      const uploadBrd = async () => {
+        if (!pendingBrd) return;
+        setUploadingBrd(true);
+        try {
+          const fd = new FormData();
+          fd.append("file", pendingBrd);
+          const r = await fetch(`${API}/api/pipeline/upload-brd`, { method: "POST", body: fd });
+          if (!r.ok) throw new Error(await r.text());
+          const data = await r.json();
+          setBrdFile(data.brd_file || `docs/${data.filename}`);
+          setBrdFilename(data.filename);
+          setPendingBrd(null);
+        } catch (e) {
+          pushError(`BRD upload: ${e.message}`);
+        } finally {
+          setUploadingBrd(false);
+        }
+      };
+
+      // ---------- Run pipeline ----------
+      const runPipeline = async () => {
+        if (!brdFile) return;
+        setStartingRun(true);
+        // reset state
+        setOutputs({ ba: "", tl: "", dev: "", rev: "" });
+        setDevHistory([]); setRevHistory([]);
+        setAgentStatus({}); setCosts({});
+        setVerdict(""); setIterations(0); setCaseCreated(""); setTotalCost(0);
+
+        try {
+          const body = JSON.stringify({ brd_file: brdFile, max_iterations: maxIterations });
+          const r = await fetch(`${API}/api/pipeline/run`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body,
+          });
+          if (!r.ok) throw new Error(await r.text());
+          const data = await r.json();
+          setRunId(data.run_id);
+          setPipelineStatus("running");
+          startPolling(data.run_id);
+        } catch (e) {
+          pushError(`Run: ${e.message}`);
+        } finally {
+          setStartingRun(false);
+        }
+      };
+
+      const startPolling = (id) => {
+        if (pollRef.current) clearInterval(pollRef.current);
+        const tick = async () => {
+          try {
+            const status = await jfetch(`/api/pipeline/status/${id}`);
+            setAgentStatus(status.agent_status || {});
+            setCosts(status.costs || {});
+            setIterations(status.iterations || 0);
+            setVerdict(status.verdict || "");
+
+            if (status.status === "completed" || status.status === "failed") {
+              clearInterval(pollRef.current);
+              pollRef.current = null;
+              setPipelineStatus(status.status);
+              if (status.status === "completed") {
+                const res = await jfetch(`/api/pipeline/results/${id}`);
+                setOutputs({
+                  ba: res.ba_output || "",
+                  tl: res.tl_output || "",
+                  dev: res.dev_output || "",
+                  rev: res.rev_output || "",
+                });
+                setDevHistory(res.dev_history || []);
+                setRevHistory(res.rev_history || []);
+                setDevIter(Math.max(0, (res.dev_history || []).length - 1));
+                setRevIter(Math.max(0, (res.rev_history || []).length - 1));
+                setVerdict(res.verdict || "");
+                setCaseCreated(res.case_created || "");
+                setTotalCost(res.total_cost || 0);
+                loadRuns();
+              } else {
+                pushError("Pipeline failed. Check server logs.");
+              }
+            }
+          } catch (e) {
+            // transient failures — don't stop polling, just warn
+            console.warn("poll error", e);
+          }
+        };
+        tick();
+        pollRef.current = setInterval(tick, 3000);
+      };
+
+      // ---------- Load past run ----------
+      const loadPastRun = async (id) => {
+        try {
+          const res = await jfetch(`/api/pipeline/results/${id}`);
+          setRunId(id);
+          setPipelineStatus("completed");
+          setOutputs({
+            ba: res.ba_output || "",
+            tl: res.tl_output || "",
+            dev: res.dev_output || "",
+            rev: res.rev_output || "",
+          });
+          setDevHistory(res.dev_history || []);
+          setRevHistory(res.rev_history || []);
+          setDevIter(Math.max(0, (res.dev_history || []).length - 1));
+          setRevIter(Math.max(0, (res.rev_history || []).length - 1));
+          setVerdict(res.verdict || "");
+          setCaseCreated(res.case_created || "");
+          setTotalCost(res.total_cost || 0);
+          setAgentStatus({ ba: "complete", tl: "complete", dev: "complete", rev: "complete" });
+        } catch (e) {
+          pushError(`Load run: ${e.message}`);
+        }
+      };
+
+      // ---------- KB doc upload ----------
+      const handleDocUpload = async (e) => {
+        const f = e.target.files?.[0];
+        if (!f) return;
+        setUploadingDoc(true);
+        try {
+          const fd = new FormData();
+          fd.append("file", f);
+          const r = await fetch(`${API}/api/documents/upload`, { method: "POST", body: fd });
+          if (!r.ok) throw new Error(await r.text());
+          await Promise.all([loadDocuments(), loadStats()]);
+        } catch (err) {
+          pushError(`Doc upload: ${err.message}`);
+        } finally {
+          setUploadingDoc(false);
+          e.target.value = "";
+        }
+      };
+
+      const deleteDoc = async (name) => {
+        try {
+          const r = await fetch(`${API}/api/documents/${encodeURIComponent(name)}`, { method: "DELETE" });
+          if (!r.ok) throw new Error(await r.text());
+          await Promise.all([loadDocuments(), loadStats()]);
+        } catch (e) {
+          pushError(`Delete: ${e.message}`);
+        }
+      };
+
+      // ---------- derived ----------
+      const tabContent = () => {
+        if (activeTab === "ba") return { text: outputs.ba, cost: costs.ba };
+        if (activeTab === "tl") return { text: outputs.tl, cost: costs.tl };
+        if (activeTab === "dev") {
+          if (devHistory.length > 1) {
+            const e = devHistory[devIter] || {};
+            return { text: e.output || "", cost: e.cost };
+          }
+          return { text: outputs.dev, cost: costs.dev };
+        }
+        if (activeTab === "rev") {
+          if (revHistory.length > 1) {
+            const e = revHistory[revIter] || {};
+            return { text: e.output || "", cost: e.cost };
+          }
+          return { text: outputs.rev, cost: costs.rev };
+        }
+        return { text: "", cost: 0 };
+      };
+      const tc = tabContent();
+      const wordCount = (tc.text || "").trim().split(/\s+/).filter(Boolean).length;
+
+      const verdictClass =
+        verdict === "APPROVED" ? "verdict-approved" :
+        verdict === "REVISION NEEDED" ? "verdict-revision" :
+        verdict ? "verdict-unknown" : "";
+
+      const isRunning = pipelineStatus === "running";
+
+      return (
+        <>
+          {/* ======= HEADER ======= */}
+          <header className="header">
+            <div className="header-left">
+              <div className="title">SPRINT 0 <span>ACCELERATOR</span></div>
+              <div className="subtitle">Multi-Agent BRD Analysis Pipeline</div>
+            </div>
+            <div className="header-right">
+              <div className="header-stat">
+                <div className="label">Documents</div>
+                <div className="value">{stats.total_documents || 0}</div>
+              </div>
+              <div className="header-stat">
+                <div className="label">Chunks</div>
+                <div className="value">{stats.total_chunks || 0}</div>
+              </div>
+              <div className="header-stat">
+                <div className="label">Runs</div>
+                <div className="value">{pipelineRuns.length}</div>
+              </div>
+              <div className="connection">
+                <span className={`dot ${apiHealthy ? "healthy" : "error"}`} />
+                <span className="connection-label">{apiHealthy ? "Online" : "Offline"}</span>
+              </div>
+            </div>
+          </header>
+
+          <div className="app-body">
+            {/* ======= LEFT PANEL ======= */}
+            <aside className="left-panel">
+              {/* BRD INPUT */}
+              <section className="card">
+                <div className="section-header">
+                  <span className="eyebrow">● BRD Input</span>
+                </div>
+
+                <label className={`dropzone ${pendingBrd || brdFile ? "has-file" : ""}`}>
+                  <input
+                    type="file"
+                    accept=".txt,.pdf,.md"
+                    onChange={handleBrdSelect}
+                  />
+                  <div className="dropzone-icon">⬆</div>
+                  <div className="dropzone-text">
+                    {pendingBrd || brdFile ? "Click to change file" : "Drop BRD file or click to select"}
+                  </div>
+                  {(pendingBrd || brdFilename) && (
+                    <div className="dropzone-file">{pendingBrd?.name || brdFilename}</div>
+                  )}
+                </label>
+
+                {pendingBrd && (
+                  <div style={{ marginTop: 10 }}>
+                    <button className="btn" onClick={uploadBrd} disabled={uploadingBrd}>
+                      {uploadingBrd ? "Uploading…" : "Upload BRD"}
+                    </button>
+                  </div>
+                )}
+
+                {brdFile && (
+                  <div className="helper-text" style={{ borderLeftColor: "var(--sage)" }}>
+                    <span className="mono" style={{ color: "var(--sage)" }}>✓ Ready:</span>{" "}
+                    <span className="mono">{brdFile}</span>
+                  </div>
+                )}
+
+                <div style={{ marginTop: 14 }}>
+                  <div className="slider-row">
+                    <span>Max Iterations</span>
+                    <span className="slider-value">{maxIterations}</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1" max="3" step="1"
+                    value={maxIterations}
+                    onChange={(e) => setMaxIterations(Number(e.target.value))}
+                  />
+                </div>
+
+                <div style={{ marginTop: 14 }}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={runPipeline}
+                    disabled={!brdFile || isRunning || startingRun}
+                  >
+                    {isRunning ? "Pipeline Running…" : startingRun ? "Starting…" : "▶ Run Pipeline"}
+                  </button>
+                </div>
+
+                {runId && (
+                  <div className="helper-text">
+                    <strong style={{ color: "var(--amber)" }}>Run ID:</strong>{" "}
+                    <span className="mono">{runId}</span>
+                  </div>
+                )}
+
+                <div className="helper-text">
+                  Four agents (BA → TL → Dev → Reviewer) will analyze the BRD,
+                  produce specs, and iterate until approved. 2–5 minutes.
+                </div>
+              </section>
+
+              {/* KNOWLEDGE BASE */}
+              <section className="card">
+                <div className="section-header">
+                  <span className="eyebrow">● Knowledge Base</span>
+                </div>
+
+                <label className="dropzone">
+                  <input type="file" accept=".txt,.pdf" onChange={handleDocUpload} />
+                  <div className="dropzone-icon">＋</div>
+                  <div className="dropzone-text">
+                    {uploadingDoc ? "Ingesting…" : "Add document to KB"}
+                  </div>
+                </label>
+
+                <div className="doc-list">
+                  {documents.length === 0 && (
+                    <div style={{ fontSize: 11, color: "var(--text-dim)", padding: 8, textAlign: "center" }}>
+                      No documents ingested yet
+                    </div>
+                  )}
+                  {documents.map((d) => (
+                    <div className="doc-item" key={d.name}>
+                      <span className="doc-name" title={d.name}>{d.name}</span>
+                      <span className="doc-chunks">{d.chunk_count}</span>
+                      <button className="btn btn-sm btn-danger" onClick={() => deleteDoc(d.name)}>×</button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="stats-row">
+                  <div className="mini-stat">
+                    <div className="v">{stats.total_documents || 0}</div>
+                    <div className="l">Docs</div>
+                  </div>
+                  <div className="mini-stat">
+                    <div className="v">{stats.total_chunks || 0}</div>
+                    <div className="l">Chunks</div>
+                  </div>
+                </div>
+              </section>
+            </aside>
+
+            {/* ======= MAIN AREA ======= */}
+            <main className="main-area">
+              {/* AGENT STATUS CARDS */}
+              <div className="agent-row">
+                {AGENTS.map((a, i) => {
+                  const s = agentStatus[a.key] || "idle";
+                  const cost = costs[a.key];
+                  const text = outputs[a.key] || "";
+                  const wc = text ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+                  return (
+                    <React.Fragment key={a.key}>
+                      <div className={`agent-card ${s}`}>
+                        <div className="agent-name">{a.name}</div>
+                        <div className="agent-role">{a.role}</div>
+                        <div className="agent-status">
+                          <span className={`status-pill ${s}`} />
+                          {s === "idle" ? "Standby" :
+                           s === "running" ? "Running" :
+                           s === "complete" ? "Complete" :
+                           s === "error" ? "Error" : s}
+                        </div>
+                        <div className="agent-metrics">
+                          <div>
+                            <div className="agent-metric-label">Cost</div>
+                            <div className="agent-metric-value">
+                              {cost != null ? `$${Number(cost).toFixed(4)}` : "—"}
+                            </div>
+                          </div>
+                          <div style={{ textAlign: "right" }}>
+                            <div className="agent-metric-label">Words</div>
+                            <div className="agent-metric-value">{wc || "—"}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+
+              {/* PROGRESS / VERDICT */}
+              {(isRunning || pipelineStatus === "completed" || verdict) && (
+                <div className="progress-card">
+                  <div className="progress-left">
+                    {isRunning ? (
+                      <>
+                        <span className={`status-pill running`} />
+                        <span className="progress-message">
+                          Pipeline running<span className="dots"></span>
+                        </span>
+                      </>
+                    ) : verdict ? (
+                      <>
+                        <span className={`verdict-badge ${verdictClass}`}>
+                          {verdict || "Unknown"}
+                        </span>
+                        {caseCreated && (
+                          <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
+                            Case created
+                          </span>
+                        )}
+                      </>
+                    ) : null}
+                  </div>
+                  <div className="progress-metrics">
+                    <div className="progress-metric">
+                      <div className="l">Iteration</div>
+                      <div className="v">{iterations || 0}</div>
+                    </div>
+                    <div className="progress-metric">
+                      <div className="l">Cost</div>
+                      <div className="v">
+                        ${(totalCost || Object.values(costs).reduce((a, b) => a + (b || 0), 0)).toFixed(4)}
+                      </div>
+                    </div>
+                    <div className="progress-metric">
+                      <div className="l">Run ID</div>
+                      <div className="v mono" style={{ color: "var(--amber)" }}>{runId || "—"}</div>
+                    </div>
+                  </div>
+
+                  {caseCreated && (
+                    <div className="case-banner" style={{ width: "100%" }}>
+                      <strong>✓ Pega Case Created</strong> — {caseCreated}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* OUTPUT TABS */}
+              <div className="tabs-container">
+                <div className="tabs">
+                  {[
+                    { k: "ba", label: "BA Analysis" },
+                    { k: "tl", label: "Tech Design" },
+                    { k: "dev", label: "Dev Specs", badge: devHistory.length > 1 ? devHistory.length : null },
+                    { k: "rev", label: "Review Report", badge: revHistory.length > 1 ? revHistory.length : null },
+                  ].map((t) => (
+                    <div
+                      key={t.k}
+                      className={`tab ${activeTab === t.k ? "active" : ""}`}
+                      onClick={() => setActiveTab(t.k)}
+                    >
+                      {t.label}
+                      {t.badge ? <span className="tab-badge">{t.badge}</span> : null}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Sub-tabs for iterations */}
+                {activeTab === "dev" && devHistory.length > 1 && (
+                  <div className="sub-tabs">
+                    {devHistory.map((_, i) => (
+                      <div
+                        key={i}
+                        className={`sub-tab ${devIter === i ? "active" : ""}`}
+                        onClick={() => setDevIter(i)}
+                      >
+                        Iteration {i + 1}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {activeTab === "rev" && revHistory.length > 1 && (
+                  <div className="sub-tabs">
+                    {revHistory.map((_, i) => (
+                      <div
+                        key={i}
+                        className={`sub-tab ${revIter === i ? "active" : ""}`}
+                        onClick={() => setRevIter(i)}
+                      >
+                        Iteration {i + 1}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="tab-content">
+                  {tc.text ? (
+                    <>
+                      <div className="tab-meta">
+                        <div>Words <strong>{wordCount}</strong></div>
+                        <div>Cost <strong>${tc.cost != null ? Number(tc.cost).toFixed(4) : "0.0000"}</strong></div>
+                        {activeTab === "rev" && verdict && (
+                          <div>Verdict <strong style={{ color: verdict === "APPROVED" ? "var(--sage)" : "var(--amber)" }}>{verdict}</strong></div>
+                        )}
+                      </div>
+                      <div className="output-content">{tc.text}</div>
+                    </>
+                  ) : (
+                    <div className="empty-state">
+                      <div className="big">Awaiting input</div>
+                      <div>Upload a BRD and run the pipeline to populate this section.</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </main>
+          </div>
+
+          {/* ======= RUN HISTORY ======= */}
+          <div className="history-bar">
+            <div className="history-title">● Run History</div>
+            <div className="history-row">
+              {pipelineRuns.length === 0 && (
+                <div className="history-empty">No pipeline runs in this session yet.</div>
+              )}
+              {pipelineRuns.slice().reverse().map((r) => (
+                <div key={r.run_id} className="history-card" onClick={() => loadPastRun(r.run_id)}>
+                  <div className="run-id">{r.run_id}</div>
+                  <div className="meta">
+                    <span style={{
+                      color:
+                        r.verdict === "APPROVED" ? "var(--sage)" :
+                        r.verdict === "REVISION NEEDED" ? "var(--amber)" :
+                        r.status === "running" ? "var(--amber)" :
+                        "var(--text-muted)"
+                    }}>
+                      {r.status === "running" ? "Running…" : (r.verdict || r.status || "—")}
+                    </span>
+                    <span className="mono">${(r.total_cost || 0).toFixed(4)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ======= ERROR TOASTS ======= */}
+          {errors.length > 0 && (
+            <div className="error-toast">
+              {errors.map((e) => (
+                <div key={e.id} className="error-item">{e.msg}</div>
+              ))}
+            </div>
+          )}
+        </>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

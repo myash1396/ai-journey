@@ -169,5 +169,24 @@
     "stage": "ApplicationReview",
     "riskFlag": false,
     "riskReason": null
+  },
+  {
+    "caseID": "L-1010",
+    "caseType": "Sprint0Implementation",
+    "status": "Open",
+    "createDate": "2026-04-25",
+    "lastUpdateDate": "2026-04-25",
+    "customerName": "Internal",
+    "customerID": "AUTO",
+    "loanAmount": 0,
+    "cibilScore": 750,
+    "monthlyIncome": 0,
+    "existingEMI": 0,
+    "requestedTenure": null,
+    "assignedTo": null,
+    "urgency": "20",
+    "stage": "ApplicationReview",
+    "riskFlag": false,
+    "riskReason": null
   }
 ]
