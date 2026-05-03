@@ -39,16 +39,24 @@ A complete full-stack application where banking professionals upload policy docu
 
 **Tech:** React 18, FastAPI, ChromaDB, Sentence Transformers, Claude API
 
-### Multi-Agent Sprint 0 Accelerator
+### Sprint 0 Accelerator — Multi-Agent BRD Pipeline
 
-An end-to-end AI pipeline that transforms a Business Requirements Document into implementation-ready specifications.
+A full-stack multi-agent pipeline that transforms a Business Requirements 
+Document into implementation-ready specifications through four AI agents.
 
-- 4-agent pipeline: BA Agent → Tech Lead → Developer Agent ↔ Reviewer Agent
-- Automated BRD analysis with RBI regulatory gap detection
-- Developer ↔ Reviewer feedback loop with VERDICT routing (APPROVED / REVISION NEEDED)
-- Dark theme Streamlit dashboard with agent status cards
-- Pipeline metrics: cost, time, iterations, verdict tracking
-- Cost: ~37 cents per full pipeline run
+- **Architecture:** StateGraph orchestration with create_react_agent for individual agents
+- 4-agent pipeline: BA Agent → Tech Lead → Developer ↔ Reviewer
+- BA Agent uses hybrid RAG (vector + BM25 keyword search via Reciprocal Rank Fusion) 
+  to search internal knowledge base before web search
+- Developer ↔ Reviewer feedback loop with iteration history tracking
+- On approval: auto-creates Pega case via MCP for implementation tracking
+- React "Mission Control" UI with real-time agent status, output tabs, iteration sub-tabs
+- FastAPI backend with 11 endpoints, background threading for non-blocking pipeline runs
+- DeepEval test suite: faithfulness, relevancy, hallucination metrics on Confident AI dashboard
+- Cost tracking per agent and per pipeline run
+
+**Tech:** React, FastAPI, LangGraph StateGraph, ChromaDB, BM25, Sentence Transformers, 
+MCP, DeepEval, Claude API
 
 ### RAG-Enhanced BA Agent
 
@@ -176,6 +184,7 @@ ChromaDB + Claude API + Sentence Transformers
 | API Docs | OpenAPI / Swagger (auto-generated) |
 | Version Control | Git, GitHub |
 | Deployment | Streamlit Cloud |
+| Hybrid Search | BM25 (rank-bm25) + Reciprocal Rank Fusion |
 
 ---
 
@@ -282,6 +291,17 @@ ai-journey/
 ├── pega_cases.json             # Simulated Pega case data
 ├── conftest.py                 # pytest config
 ├── requirements.txt
+├── sprint0/
+│   ├── __init__.py
+│   ├── agent_factory.py        # Shared agent creation utility
+│   ├── pipeline.py             # StateGraph pipeline orchestrator
+│   ├── api.py                  # FastAPI backend (RAG + pipeline)
+│   ├── hybrid_rag.py           # BM25 + vector hybrid search
+│   ├── frontend/
+│   │   └── index.html          # React Mission Control UI
+│   └── tests/
+│       ├── conftest.py         # Test fixtures
+│       └── test_pipeline.py    # DeepEval test suite
 │
 ├── tools/
 │   ├── rag_engine.py           # ChromaDB RAG pipeline
@@ -327,7 +347,10 @@ Days 14-20: LangGraph agents, StateGraph, web search, 4-agent pipeline, MCP serv
 **Week 4** ✅ RAG + Full Stack
 Days 21-27: ChromaDB, vector search, RAG engine, RAG-enhanced agents, Pega DX API, FastAPI backend, React frontend
 
-**Week 5** — Visibility + Launch
+**Week 5** ✅ Flagship Product + Deep Knowledge
+Days 28-34: Codebase retrospect, Sprint 0 Accelerator flagship — StateGraph pipeline, 
+FastAPI backend (11 endpoints), React Mission Control UI, hybrid RAG (BM25 + vector), 
+DeepEval test suite with Confident AI, CI/CD knowledge, Transformers architecture
 
 ---
 
