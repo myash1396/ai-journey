@@ -15,6 +15,7 @@ from typing import TypedDict, Annotated, Sequence
 
 from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
 from langchain_core.tools import tool
+from sprint0.hybrid_rag import HybridRAG
 from langgraph.graph import StateGraph, END
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -38,36 +39,36 @@ def read_document(file_path: str) -> str:
 
 @tool
 def search_knowledge_base(query: str) -> str:
-    """Search internal knowledge base for existing documents, old BRDs, policies. Use BEFORE web search."""
+    """
+    Search the internal knowledge base for existing documents, old BRDs, policies,
+    application documentation, and business rules. Use this BEFORE web search to
+    check internal knowledge first. Uses hybrid search (vector + BM25 keyword matching).
+    """
     try:
-        import chromadb
-        from sentence_transformers import SentenceTransformer
+        rag = HybridRAG()
+        results = rag.hybrid_search(query, n_results=3)
 
-        model = SentenceTransformer("all-MiniLM-L6-v2")
-        client = chromadb.PersistentClient(path="./chroma_db")
-        try:
-            collection = client.get_collection("banking_docs")
-        except Exception:
-            return "No knowledge base found"
+        if not results:
+            return "No relevant documents found in the internal knowledge base."
 
-        embedding = model.encode(query).tolist()
-        results = collection.query(query_embeddings=[embedding], n_results=3)
+        formatted = []
+        for i, r in enumerate(results):
+            found_in = []
+            if r["vector_rank"] is not None:
+                found_in.append(f"vector#{r['vector_rank']}")
+            if r["bm25_rank"] is not None:
+                found_in.append(f"bm25#{r['bm25_rank']}")
+            tag = ", ".join(found_in) if found_in else "none"
 
-        docs = results.get("documents", [[]])[0]
-        metas = results.get("metadatas", [[]])[0]
-        dists = results.get("distances", [[]])[0]
-
-        if not docs:
-            return "No relevant chunks found."
-
-        out = []
-        for i, doc in enumerate(docs):
-            source = metas[i].get("source", "unknown") if i < len(metas) and metas[i] else "unknown"
-            dist = dists[i] if i < len(dists) else 0.0
-            out.append(f"[Source: {source} | Distance: {dist:.3f}]\n{doc}")
-        return "\n\n---\n\n".join(out)
+            formatted.append(
+                f"--- Chunk {i + 1} ---\n"
+                f"Source: {r['source']}\n"
+                f"RRF Score: {r['rrf_score']:.4f} | Found by: {tag}\n"
+                f"Text: {r['text']}\n"
+            )
+        return "\n".join(formatted)
     except Exception as e:
-        return f"Knowledge base error: {e}"
+        return f"Error searching knowledge base: {e}"
 
 
 @tool
