@@ -207,5 +207,43 @@
     "stage": "ApplicationReview",
     "riskFlag": false,
     "riskReason": null
+  },
+  {
+    "caseID": "L-1012",
+    "caseType": "Sprint0Implementation",
+    "status": "Open",
+    "createDate": "2026-05-08",
+    "lastUpdateDate": "2026-05-08",
+    "customerName": "Internal",
+    "customerID": "AUTO",
+    "loanAmount": 0,
+    "cibilScore": 750,
+    "monthlyIncome": 0,
+    "existingEMI": 0,
+    "requestedTenure": null,
+    "assignedTo": null,
+    "urgency": "20",
+    "stage": "ApplicationReview",
+    "riskFlag": false,
+    "riskReason": null
+  },
+  {
+    "caseID": "L-1013",
+    "caseType": "Sprint0Implementation",
+    "status": "Open",
+    "createDate": "2026-05-10",
+    "lastUpdateDate": "2026-05-10",
+    "customerName": "Internal",
+    "customerID": "AUTO",
+    "loanAmount": 0,
+    "cibilScore": 750,
+    "monthlyIncome": 0,
+    "existingEMI": 0,
+    "requestedTenure": null,
+    "assignedTo": null,
+    "urgency": "20",
+    "stage": "ApplicationReview",
+    "riskFlag": false,
+    "riskReason": null
   }
 ]

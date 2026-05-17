@@ -15,3 +15,7 @@ chroma_db/
 uploads/
 
 sprint0/__pycache__/
+
+# Coverage
+.coverage
+htmlcov/
